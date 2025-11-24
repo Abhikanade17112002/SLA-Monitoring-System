@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Authentication-Service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/AUTHENTICATIONSERVICE?useSSL=false&serverTimezone=UTC
+    username: root
+    password: Encora@12345
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  security:
+    user:
+      name: admin
+      password: admin123
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
