@@ -6,6 +6,8 @@ spring:
   application:
     name: Eureka-Discovery-Service
 
+
+
 eureka:
   client:
     register-with-eureka: false
