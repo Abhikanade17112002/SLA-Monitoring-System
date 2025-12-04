@@ -3,7 +3,7 @@ public enum UserRole {
 
     ADMIN("Admin"),
     USER("User"),
-    VIEWER("Viewer");
+    DEVELOPER("Developer");
 
     private final String userRole;
 
