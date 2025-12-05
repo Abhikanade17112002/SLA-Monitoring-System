@@ -10,6 +10,7 @@ import com.authetication_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,20 @@ public class AuthenticationController {
 
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity< UserSignInResponseDTO > getUserSignIn(@RequestBody UserSignInRequestDTO user ){
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        userService.getUserSignIn( user )
+                ) ;
+
+    }
+
+
+
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/create/role")
     public ResponseEntity<CreateRoleResponseDTO> createRole(@RequestBody CreateRoleRequestDTO userRole){
 
@@ -49,7 +64,7 @@ public class AuthenticationController {
                 ) ;
     }
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
     ResponseEntity<List<CreateRoleResponseDTO>> getAllUserRoles(){
         return ResponseEntity

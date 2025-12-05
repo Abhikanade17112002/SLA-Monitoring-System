@@ -1,34 +1,61 @@
+
+jwt:
+  token:
+    key: iudfui3428374kbdfbskddbkfjnds3242512hjxcksbdjkskvsnmvenruiwdnfundf64564648265376123123hsdfhjdcdnksjdfvdgcvdvcjhabckdldmf;ogdfmg;odfmdfnvbsdhcbjsdvcatsvdhascasbdajsvdjavsjdhfvshdfvhsdfksdgsldgsdflsjdfhsukdfgajsvasdkjabsfjavsdasabsdgasdhacsd
+    expiration: 900000
+
 server:
   port: 8081
 
 spring:
   application:
-    name: API-Gateway-Service
+    name: Api-Gateway-Service
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+            maxAge: 3600
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"   # exposes all actuator endpoints (/health, /info, /metrics, /gateway, etc.)
-  endpoint:
-    health:
-      show-details: always  # show complete health info (disk, memory, ping, Eureka)
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
+      routes:
+        - id: authentication-service
+          uri: lb://authentication-service
+          predicates:
+            - Path=/auth/**,/test/**
+        - id: doctor-service
+          uri: lb://doctor-service
+          predicates:
+            - Path=/doctor/**
+        - id: patient-service
+          uri: lb://patient-service
+          predicates:
+            - Path=/patients/**
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/appointments/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
-    register-with-eureka: true
-    fetch-registry: true
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

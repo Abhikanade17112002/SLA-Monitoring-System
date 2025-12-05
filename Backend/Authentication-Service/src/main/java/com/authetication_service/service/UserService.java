@@ -1,5 +1,7 @@
 package com.authetication_service.service;
 
+import com.authetication_service.controllers.UserSignInRequestDTO;
+import com.authetication_service.controllers.UserSignInResponseDTO;
 import com.authetication_service.dtos.UserSignUpRequestDTO;
 import com.authetication_service.dtos.UserSignUpResponseDTO;
 import com.authetication_service.entities.Role;
@@ -7,8 +9,13 @@ import com.authetication_service.entities.User;
 import com.authetication_service.enums.UserRole;
 import com.authetication_service.repository.RoleRepository;
 import com.authetication_service.repository.UserRepository;
+import com.authetication_service.utility.JWTUtility;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +24,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService  implements UserDetailsService {
+
+    @Autowired
+    private JWTUtility jwtUtility ;
+
+    @Autowired
+    @Lazy
+    private AuthenticationManager authenticationManager ;
 
     @Autowired
     private PasswordEncoder bCryptPasswordEncoder ;
@@ -92,5 +106,37 @@ public class UserService  implements UserDetailsService {
         ) ;
 
         return response ;
+    }
+
+    public UserSignInResponseDTO getUserSignIn(UserSignInRequestDTO user) {
+
+        System.out.println("Received User Request ==>  " + user );
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getEmailId() ,
+                        user.getPassword()
+                )
+        );
+
+        System.out.println("authentication ==> " + authentication);
+
+        User authenticatedUser = (User) authentication.getPrincipal() ;
+
+        System.out.println("authenticatedUser ==> " + authenticatedUser );
+
+
+        String authJwtToken = jwtUtility.generateToken( authenticatedUser );
+
+        System.out.println(" authJwtToken ==> " + authJwtToken );
+
+        UserSignInResponseDTO response = new UserSignInResponseDTO() ;
+
+        response.setUserId( authenticatedUser.getUserId() ) ;
+        response.setJwtToken( "Bearer " + authJwtToken );
+
+
+        return response ;
+
     }
 }

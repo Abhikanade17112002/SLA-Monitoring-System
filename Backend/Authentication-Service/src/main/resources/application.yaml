@@ -1,4 +1,8 @@
 
+jwt:
+  token:
+    key: iudfui3428374kbdfbskddbkfjnds3242512hjxcksbdjkskvsnmvenruiwdnfundf64564648265376123123hsdfhjdcdnksjdfvdgcvdvcjhabckdldmf;ogdfmg;odfmdfnvbsdhcbjsdvcatsvdhascasbdajsvdjavsjdhfvshdfvhsdfksdgsldgsdflsjdfhsukdfgajsvasdkjabsfjavsdasabsdgasdhacsd
+    expiration: 900000
 server:
   port: 8082
 
@@ -8,10 +12,20 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
+    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
     username: postgres.rjlmozorrqoxmmtthboz
     password: Abhi@17112002
     driver-class-name: org.postgresql.Driver
+
+
+    hikari:
+      maximum-pool-size: 3          # Keep this LOW for Supabase pooler
+      minimum-idle: 1                # Minimum idle connections
+      connection-timeout: 30000      # 30 seconds
+      idle-timeout: 600000           # 10 minutes
+      max-lifetime: 1800000          # 30 minutes
+      leak-detection-threshold: 60000 # Detect connection leaks after 60 seconds
+
 
   jpa:
     hibernate:
