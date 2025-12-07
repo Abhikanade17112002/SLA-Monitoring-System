@@ -36,14 +36,14 @@ spring:
           uri: lb://authentication-service
           predicates:
             - Path=/auth/**,/test/**
-        - id: doctor-service
-          uri: lb://doctor-service
+        - id: monitor-service
+          uri: lb://monitor-service
           predicates:
-            - Path=/doctor/**
-        - id: patient-service
-          uri: lb://patient-service
+            - Path=/monitor/**
+        - id: metrics-service
+          uri: lb://metrics-service
           predicates:
-            - Path=/patients/**
+            - Path=/metrics/**
         - id: appointment-service
           uri: lb://appointment-service
           predicates:
@@ -51,7 +51,7 @@ spring:
         - id: notification-service
           uri: lb://notification-service
           predicates:
-            - Path=/api/notifications/**
+            - Path=/notifications/**
 
 eureka:
   client:

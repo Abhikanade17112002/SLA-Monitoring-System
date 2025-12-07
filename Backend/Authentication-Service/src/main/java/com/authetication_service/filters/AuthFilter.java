@@ -36,16 +36,10 @@ public class AuthFilter extends OncePerRequestFilter {
       String authenticationHeader = request.getHeader("Authorization") ;
 
 
-        System.out.println(" authenticationHeader ==> " + authenticationHeader);
-
-      if( authenticationHeader == null  || !authenticationHeader.startsWith("Bearer") ){
-
-          // Token IS Null Or Does Not Starts With Bearer
+      if( authenticationHeader == null || !authenticationHeader.startsWith("Bearer ") ){
           filterChain.doFilter(request,response);
-          return;
-
+          return ;
       }
-
       String token = authenticationHeader.split(" ")[1] ;
 
        System.out.println("Received Token ==> " + token );
@@ -55,10 +49,12 @@ public class AuthFilter extends OncePerRequestFilter {
 
         User retrivedUser = userRepository
                 .findById( userId )
-                .orElseThrow(()-> new EntityNotFoundException("USer With User Id ==> " + userId + " Not Found "));
+                .orElseThrow(()-> new EntityNotFoundException("User With User Id ==> " + userId + " Not Found "));
 
 
         System.out.println("Retrieved User ==> " + retrivedUser );
+
+        System.out.println("Auth ==> " + SecurityContextHolder.getContext().getAuthentication());
 
         if( retrivedUser != null && SecurityContextHolder.getContext().getAuthentication() == null ){
             //Create an Authentication Token

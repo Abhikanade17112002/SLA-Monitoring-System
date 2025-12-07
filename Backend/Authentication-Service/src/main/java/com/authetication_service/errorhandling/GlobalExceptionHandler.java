@@ -1,23 +1,33 @@
 package com.authetication_service.errorhandling;
 
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.nio.file.AccessDeniedException;
-import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    // ---------- 404: User Not Found ----------
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFound(EntityNotFoundException ex) {
+        return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    // ---------- 401: Wrong Password / Bad Credentials ----------
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex) {
+        return buildResponse("Invalid email or password", HttpStatus.UNAUTHORIZED);
+    }
 
     // ---------- 401: Token Expired ----------
     @ExceptionHandler(ExpiredJwtException.class)
@@ -26,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     // ---------- 401: Invalid / Malformed Token ----------
-    @ExceptionHandler({MalformedJwtException.class, SignatureException.class, IllegalArgumentException.class})
+    @ExceptionHandler({MalformedJwtException.class, IllegalArgumentException.class})
     public ResponseEntity<Object> handleInvalidToken(Exception ex) {
         return buildResponse("Invalid token", HttpStatus.UNAUTHORIZED);
     }
@@ -40,7 +50,7 @@ public class GlobalExceptionHandler {
     // ---------- 500: Internal Server Errors ----------
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGeneralException(Exception ex) {
-        ex.printStackTrace();  // useful for debugging
+        ex.printStackTrace();
         return buildResponse("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -50,7 +60,6 @@ public class GlobalExceptionHandler {
         body.put("status", status.value());
         body.put("error", status.getReasonPhrase());
         body.put("message", message);
-
         return new ResponseEntity<>(body, status);
     }
 }

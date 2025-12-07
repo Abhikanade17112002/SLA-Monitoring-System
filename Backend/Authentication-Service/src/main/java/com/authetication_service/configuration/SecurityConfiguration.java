@@ -40,7 +40,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests(
                         auth-> auth
-                                .requestMatchers("/auth/**","/actuator/")
+                                .requestMatchers("/auth/**","/actuator/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

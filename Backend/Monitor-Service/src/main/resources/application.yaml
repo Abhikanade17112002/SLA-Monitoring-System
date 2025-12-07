@@ -1,0 +1,60 @@
+
+jwt:
+  token:
+    key: iudfui3428374kbdfbskddbkfjnds3242512hjxcksbdjkskvsnmvenruiwdnfundf64564648265376123123hsdfhjdcdnksjdfvdgcvdvcjhabckdldmf;ogdfmg;odfmdfnvbsdhcbjsdvcatsvdhascasbdajsvdjavsjdhfvshdfvhsdfksdgsldgsdflsjdfhsukdfgajsvasdkjabsfjavsdasabsdgasdhacsd
+    expiration: 900000
+server:
+  port: 8083
+
+spring:
+  application:
+    name: Monitor-Service
+
+  datasource:
+    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
+    username: postgres.uppmimztjogbmwkocsih
+    password: gufVCd1tV804BoGY
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 3          # Keep this LOW for Supabase pooler
+      minimum-idle: 1                # Minimum idle connections
+      connection-timeout: 30000      # 30 seconds
+      idle-timeout: 600000           # 10 minutes
+      max-lifetime: 1800000          # 30 minutes
+      leak-detection-threshold: 60000 # Detect connection leaks after 60 seconds
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"   # exposes all actuator endpoints (/health, /info, /metrics, /gateway, etc.)
+  endpoint:
+    health:
+      show-details: always  # show complete health info (disk, memory, ping, Eureka)
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
