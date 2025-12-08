@@ -11,3 +11,12 @@ html, body, #root {
 width: 100%;
 min-height: 100vh;
 }
+
+/* index.css or global CSS */
+.input-primary {
+  @apply w-full p-3 rounded-xl bg-white/10 border border-white/20 
+         text-white placeholder-gray-400
+         focus:outline-none focus:ring-2 focus:ring-blue-500/70 
+         backdrop-blur-xl;
+}
+

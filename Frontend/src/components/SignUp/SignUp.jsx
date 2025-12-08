@@ -1,120 +1,125 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { registerUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { loading, error } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
+    userName: "",
     firstName: "",
     lastName: "",
     emailId: "",
     password: "",
-    role: "User",
+    role: "VIEWER",
   });
 
-  const handleChange = (e) => {
+  const changeHandler = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-
     const res = await dispatch(registerUser(form));
 
     if (res.meta.requestStatus === "fulfilled") {
-      navigate("/login");
+      navigate("/user/signin");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <form
-        className="bg-white shadow-xl rounded-lg p-8 w-full max-w-md"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          User Sign Up 
+    <div className="min-h-screen flex items-center justify-center px-4 
+                    bg-gradient-to-b from-black via-[#0b0f1a] to-black text-white">
+
+      <div className="w-full max-w-md bg-white/5 backdrop-blur-2xl 
+                      border border-white/10 rounded-2xl shadow-[0_0_40px_rgba(0,0,0,0.5)]
+                      p-8">
+
+        <h2 className="text-3xl font-extrabold text-center mb-6">
+          Create Your Account
         </h2>
 
-        {/* Name Fields */}
-        <div className="grid grid-cols-2 gap-3">
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            onChange={handleChange}
-            className="border p-3 rounded focus:outline-blue-500"
-          />
+        <form onSubmit={submitHandler} className="space-y-5">
+
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              onChange={changeHandler}
+              className="input-primary"
+            />
+
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              onChange={changeHandler}
+              className="input-primary"
+            />
+          </div>
 
           <input
             type="text"
-            name="lastName"
-            placeholder="Last Name"
-            onChange={handleChange}
-            className="border p-3 rounded focus:outline-blue-500"
+            name="userName"
+            placeholder="Username"
+            onChange={changeHandler}
+            className="input-primary"
           />
-        </div>
 
+          <input
+            type="email"
+            name="emailId"
+            placeholder="Email Address"
+            onChange={changeHandler}
+            className="input-primary"
+          />
 
-        {/* Email */}
-        <input
-          type="email"
-          name="emailId"
-          placeholder="Email Address"
-          onChange={handleChange}
-          className="w-full border p-3 rounded mt-4 focus:outline-blue-500"
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={changeHandler}
+            className="input-primary"
+          />
 
-        {/* Password */}
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          className="w-full border p-3 rounded mt-4 focus:outline-blue-500"
-        />
-
-        {/* Role Dropdown */}
-        <select
-          name="role"
-          onChange={handleChange}
-          className="w-full border p-3 rounded mt-4 bg-white focus:outline-blue-500"
-        >
-          <option value="Dev">Developer</option>
-          <option value="User">User</option>
-        </select>
-
-        {/* Error */}
-        {error && (
-          <p className="text-red-500 text-sm my-2 text-center">
-            {error}
-          </p>
-        )}
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded mt-5 hover:bg-blue-700 transition-colors"
-        >
-          {loading ? "Creating account..." : "Sign Up"}
-        </button>
-
-        <p className="text-center text-sm mt-4 text-gray-600">
-          Already have an account?{" "}
-          <span
-            className="text-blue-600 cursor-pointer"
-            onClick={() => navigate("/user/signin")}
+          <select
+            name="role"
+            onChange={changeHandler}
+            className="input-primary bg-black/30"
           >
-            Sign In
-          </span>
-        </p>
-      </form>
+            <option value="VIEWER">Viewer</option>
+            <option value="DEV">Developer</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+
+          {error && (
+            <p className="text-red-400 text-center text-sm">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 bg-blue-600 rounded-xl 
+                       shadow-[0_0_20px_rgba(59,130,246,0.7)]
+                       hover:bg-blue-700 hover:shadow-blue-500/50 
+                       transition-all transform hover:scale-[1.03]"
+          >
+            {loading ? "Creating Account..." : "Sign Up"}
+          </button>
+
+          <p className="text-center text-sm text-gray-400">
+            Already have an account?{" "}
+            <span
+              onClick={() => navigate("/user/signin")}
+              className="text-blue-400 cursor-pointer hover:underline"
+            >
+              Sign In
+            </span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
