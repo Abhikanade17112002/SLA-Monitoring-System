@@ -1,7 +1,7 @@
 package com.authetication_service.service;
 
-import com.authetication_service.controllers.UserSignInRequestDTO;
-import com.authetication_service.controllers.UserSignInResponseDTO;
+import com.authetication_service.dtos.UserSignInRequestDTO;
+import com.authetication_service.dtos.UserSignInResponseDTO;
 import com.authetication_service.dtos.UserSignUpRequestDTO;
 import com.authetication_service.dtos.UserSignUpResponseDTO;
 import com.authetication_service.entities.Role;
@@ -132,8 +132,16 @@ public class UserService  implements UserDetailsService {
 
         UserSignInResponseDTO response = new UserSignInResponseDTO() ;
 
-        response.setUserId( authenticatedUser.getUserId() ) ;
-        response.setJwtToken( "Bearer " + authJwtToken );
+
+
+        response.setUserId( authenticatedUser.getUserId());
+        response.setUserName(authenticatedUser.getUserName());
+        response.setEmailId(authenticatedUser.getEmailId());
+        response.setFirstName(authenticatedUser.getFirstName());
+        response.setLastName(authenticatedUser.getLastName());
+        response.setJwtToken(authJwtToken);
+        response.setRole(authenticatedUser.getRole().getUserRole().getUserRole());
+
 
 
         return response ;

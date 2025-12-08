@@ -1,15 +1,8 @@
 package com.monitor_service.services;
 
-import com.monitor_service.dtos.ApiStatusResponse;
-import com.monitor_service.dtos.CreateMonitorApiResponse;
-import com.monitor_service.dtos.CreateMonitoredApiRequest;
-import com.monitor_service.dtos.UpdateMonitoredApiRequest;
-import com.monitor_service.entities.LatencyLog;
-import com.monitor_service.entities.MonitoredApi;
-import com.monitor_service.entities.ThresholdConfig;
-import com.monitor_service.repositories.LatencyLogRepository;
-import com.monitor_service.repositories.MonitoredApiRepository;
-import com.monitor_service.repositories.ThresholdConfigRepository;
+import com.monitor_service.dtos.*;
+import com.monitor_service.entities.*;
+import com.monitor_service.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +17,10 @@ public class MonitorApiService {
     private ThresholdConfigRepository thresholdConfigRepository ;
     @Autowired
     private LatencyLogRepository latencyLogRepository ;
+    @Autowired
+    private HealthCheckLogRepository healthCheckLogRepository ;
+    @Autowired
+    private DownTimeIncidentRepository downTimeIncidentRepository ;
 
 
     public CreateMonitorApiResponse createApi(CreateMonitoredApiRequest request) {
@@ -124,4 +121,27 @@ public class MonitorApiService {
         return response;
     }
 
+    public FetchDataResponse getAdminData() {
+
+        List<DownTimeIncident> downTimeIncidents = downTimeIncidentRepository.findAll() ;
+        List<HealthCheckLog> healthCheckLogs = healthCheckLogRepository.findAll() ;
+        List<MonitoredApi> monitoredApis = monitoredApiRepository.findAll() ;
+        List<LatencyLog> latencyLogs = latencyLogRepository.findAll() ;
+        List<ThresholdConfig> thresholdConfigs = thresholdConfigRepository.findAll() ;
+
+
+        FetchDataResponse fetchDataResponse = new FetchDataResponse() ;
+
+        fetchDataResponse.setMonitoredApis(monitoredApis);
+        fetchDataResponse.setDownTimeIncidents(downTimeIncidents);
+        fetchDataResponse.setHealthCheckLogs(healthCheckLogs);
+        fetchDataResponse.setLatencyLogs(latencyLogs);
+        fetchDataResponse.setThresholdConfigs(thresholdConfigs);
+
+
+        System.out.println(fetchDataResponse);
+
+
+        return fetchDataResponse ;
+    }
 }

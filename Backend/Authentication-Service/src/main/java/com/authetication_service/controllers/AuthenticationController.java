@@ -1,10 +1,7 @@
 package com.authetication_service.controllers;
 
 
-import com.authetication_service.dtos.CreateRoleRequestDTO;
-import com.authetication_service.dtos.CreateRoleResponseDTO;
-import com.authetication_service.dtos.UserSignUpRequestDTO;
-import com.authetication_service.dtos.UserSignUpResponseDTO;
+import com.authetication_service.dtos.*;
 import com.authetication_service.service.RoleService;
 import com.authetication_service.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

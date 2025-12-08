@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { handleSignInUser, handleSignUpUser } from "../../store/slices/AuthSlice/AuthSlice";
+import { handleFetchMonitoredApisData } from "../../store/slices/MonitorSlice/MonitorSlice";
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userAuth = useSelector((state) => state.auth) ;
+
+   console.log("userAuth ==> ");
+   console.log(userAuth);
+   
+   
 
   const { loading, error } = useSelector((state) => state.auth);
 
@@ -16,15 +24,35 @@ const SignIn = () => {
   const changeHandler = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
+  console.log("Sign In Form ==> ");
+  console.log(form);
+  
+  
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    const res = await dispatch(loginUser(form));
+    const response = await dispatch(handleSignInUser(form));
 
-    if (res.meta.requestStatus === "fulfilled") {
-      await dispatch(loadUser());
-      navigate("/dashboard");
+
+    console.log("Sign In Response ==> ");
+    console.log(response);
+    
+    
+
+    if (response.type === "auth/signInUser/fulfilled") {
+      navigate("/");
     }
   };
+
+
+  useEffect(() => { 
+
+    console.log("User Auth State Changed ==> ");
+    console.log(userAuth);
+
+    
+    }, [userAuth]) ;
+
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 
@@ -69,7 +97,7 @@ const SignIn = () => {
                        hover:bg-blue-700 hover:shadow-blue-500/50 
                        transition-all transform hover:scale-[1.03]"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {userAuth?.isLoading ? "Signing in..." : "Sign In"}
           </button>
 
           <p className="text-center text-sm text-gray-400">

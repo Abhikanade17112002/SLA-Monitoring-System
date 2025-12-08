@@ -1,9 +1,6 @@
 package com.monitor_service.controllers;
 
-import com.monitor_service.dtos.ApiStatusResponse;
-import com.monitor_service.dtos.CreateMonitorApiResponse;
-import com.monitor_service.dtos.CreateMonitoredApiRequest;
-import com.monitor_service.dtos.UpdateMonitoredApiRequest;
+import com.monitor_service.dtos.*;
 import com.monitor_service.entities.MonitoredApi;
 import com.monitor_service.services.MonitorApiService;
 import jakarta.validation.Valid;
@@ -62,6 +59,17 @@ public class MonitorApiController {
                 ) ;
 
     }
+
+    @GetMapping("/fetchdata/admin")
+    @PreAuthorize("hasAnyAuthority('Admin')")
+    public ResponseEntity<FetchDataResponse> getAdminData( ){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        monitorApiService.getAdminData( )
+                ) ;
+
+    }
+
 
 
 

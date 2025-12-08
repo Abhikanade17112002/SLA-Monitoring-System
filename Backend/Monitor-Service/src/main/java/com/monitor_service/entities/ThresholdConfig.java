@@ -94,7 +94,7 @@ public class ThresholdConfig {
     public String toString() {
         return "ThresholdConfig{" +
                 "thresholdId='" + thresholdId + '\'' +
-                ", monitoredApi=" + monitoredApi +
+//                ", monitoredApi=" + monitoredApi +
                 ", expectedStatusCode=" + expectedStatusCode +
                 ", maxResponseTimeMs=" + maxResponseTimeMs +
                 ", retryAttempts=" + retryAttempts +

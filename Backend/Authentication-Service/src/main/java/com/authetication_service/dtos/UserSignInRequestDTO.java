@@ -1,4 +1,4 @@
-package com.authetication_service.controllers;
+package com.authetication_service.dtos;
 
 public class UserSignInRequestDTO {
     private String emailId ;

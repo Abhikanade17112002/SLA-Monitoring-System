@@ -1,23 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { useSelector } from 'react-redux';
-import LandingPage from './components/LandingPage/LandingPage.jsx';
+import {  useEffect } from "react";
+import "./App.css";
+import { useSelector } from "react-redux";
+import LandingPage from "./components/LandingPage/LandingPage.jsx";
+
 
 function App() {
-  const [count, setCount] = useState(0) ;
+  const userAuth = useSelector((state) => state.auth);
+  const monitorData = useSelector((state) => state.monitor);
 
-  const { user , token , isLoading} = useSelector((state) => state.auth) ;
 
-  console.log("User ==> " + user );
-  console.log("Token ==> " + token );
-  console.log("Is Loading ==> " + isLoading );
-  
+  useEffect(() => {
+      console.log("App Component - User Auth State ==> ");  
+  console.log(userAuth);
 
-  return (
-      <LandingPage />
-  )
+  console.log("App Component - Monitor Data State ==> ");  
+  console.log(monitorData);
+ 
+  }, [userAuth, monitorData]);
+
+
+
+  return <LandingPage />;
 }
 
-export default App
+export default App;
