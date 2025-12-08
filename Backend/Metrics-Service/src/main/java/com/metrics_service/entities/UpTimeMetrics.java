@@ -1,5 +1,4 @@
 package com.metrics_service.entities;
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -68,5 +67,17 @@ public class UpTimeMetrics {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "UpTimeMetrics{" +
+                "id='" + id + '\'' +
+                ", apiId='" + apiId + '\'' +
+                ", up=" + up +
+                ", statusCode=" + statusCode +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

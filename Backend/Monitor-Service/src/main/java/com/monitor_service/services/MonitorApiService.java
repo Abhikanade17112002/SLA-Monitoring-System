@@ -1,6 +1,7 @@
 package com.monitor_service.services;
 
 import com.monitor_service.dtos.ApiStatusResponse;
+import com.monitor_service.dtos.CreateMonitorApiResponse;
 import com.monitor_service.dtos.CreateMonitoredApiRequest;
 import com.monitor_service.dtos.UpdateMonitoredApiRequest;
 import com.monitor_service.entities.LatencyLog;
@@ -25,7 +26,7 @@ public class MonitorApiService {
     private LatencyLogRepository latencyLogRepository ;
 
 
-    public String createApi(CreateMonitoredApiRequest request) {
+    public CreateMonitorApiResponse createApi(CreateMonitoredApiRequest request) {
 
         if (monitoredApiRepository.existsByApiUrl(request.getApiUrl())) {
             throw new RuntimeException("API already exists with same URL.");
@@ -50,7 +51,11 @@ public class MonitorApiService {
 
         thresholdConfigRepository.save(config);
 
-        return savedApi.getApiId();
+        return new CreateMonitorApiResponse(
+                savedApi.getApiId() ,
+                savedApi.getApiUrl() ,
+                savedApi.getApiName()
+        );
     }
 
 

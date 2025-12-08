@@ -1,6 +1,7 @@
 package com.monitor_service.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class ThresholdConfig {
 
     @OneToOne
     @JoinColumn(name = "api_id", nullable = false)
+    @JsonBackReference
     private MonitoredApi monitoredApi;
 
     @Column(nullable = false)

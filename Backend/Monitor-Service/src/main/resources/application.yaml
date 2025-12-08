@@ -58,3 +58,27 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
+
+# Feign Configuration
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 30000
+      metrics-service:
+        connectTimeout: 5000
+        readTimeout: 30000
+
+# Logging Configuration
+logging:
+  level:
+    feign: DEBUG
+    com.monitor_service: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate:
+      SQL: DEBUG
+      type:
+        descriptor:
+          sql:
+            BasicBinder: TRACE

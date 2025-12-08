@@ -44,10 +44,6 @@ spring:
           uri: lb://metrics-service
           predicates:
             - Path=/metrics/**
-        - id: appointment-service
-          uri: lb://appointment-service
-          predicates:
-            - Path=/appointments/**
         - id: notification-service
           uri: lb://notification-service
           predicates:

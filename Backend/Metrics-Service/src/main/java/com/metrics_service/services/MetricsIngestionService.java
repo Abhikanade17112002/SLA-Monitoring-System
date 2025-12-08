@@ -16,6 +16,8 @@ import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MetricsIngestionService {
 
@@ -71,7 +73,19 @@ public class MetricsIngestionService {
         // --------------------------
         // TRIGGER DOWNTIME ALERT
         // --------------------------
-        if (!dto.isUp()) {
+        List<UpTimeMetrics> upTimeMetrics = upTimeMetricsRepository.findByApiIdOrderByTimestampDesc(dto.getApiId()) ;
+        System.out.println("upTimeMetrics ==> " + upTimeMetrics );
+        if (!dto.isUp() && upTimeMetrics.size() == 1 ) {
+            AlertEventDTO alert = new AlertEventDTO(
+                    dto.getApiId(),
+                    "DOWN",
+                    "API is DOWN. Error: " + dto.getErrorMessage(),
+                    null,
+                    dto.getTimestamp()
+            );
+            notificationClient.sendAlert(alert);
+        }
+        else if( !dto.isUp() && upTimeMetrics.get(0).isUp()){
             AlertEventDTO alert = new AlertEventDTO(
                     dto.getApiId(),
                     "DOWN",
@@ -85,7 +99,7 @@ public class MetricsIngestionService {
         // --------------------------
         // TRIGGER RECOVERY ALERT
         // --------------------------
-        if (dto.isUp() && dto.getErrorMessage() == null) {
+        if (dto.isUp() && upTimeMetrics.size() == 1) {
             AlertEventDTO alert = new AlertEventDTO(
                     dto.getApiId(),
                     "RECOVERED",
@@ -94,6 +108,18 @@ public class MetricsIngestionService {
                     dto.getTimestamp()
             );
             notificationClient.sendAlert(alert);
+        }
+        else if( dto.isUp() &&  !upTimeMetrics.get(0).isUp()){
+
+            AlertEventDTO alert = new AlertEventDTO(
+                    dto.getApiId(),
+                    "RECOVERED",
+                    "API has recovered with status: " + dto.getStatusCode(),
+                    null,
+                    dto.getTimestamp()
+            );
+            notificationClient.sendAlert(alert);
+
         }
     }
 

@@ -79,6 +79,8 @@ public class MetricsAnalyticsService {
         List<UpTimeMetrics> uptimeLogs =
                 upTimeMetricsRepository.findByApiIdOrderByTimestampDesc(apiId);
 
+        System.out.println("uptimeLogs ==> " + uptimeLogs);
+
         long totalChecks = uptimeLogs.size();
         long upChecks = uptimeLogs.stream().filter(UpTimeMetrics::isUp).count();
 
@@ -100,6 +102,9 @@ public class MetricsAnalyticsService {
         // Total downtime minutes
         List<DownTimeIncident> incidents =
                 downTimeIncidentRepository.findByApiIdOrderByStartedAtDesc(apiId);
+
+
+        System.out.println(" DownTimeIncident ==> " + incidents);
 
         int totalDowntimeMinutes = incidents.stream()
                 .filter(i -> i.getResolvedAt() != null)

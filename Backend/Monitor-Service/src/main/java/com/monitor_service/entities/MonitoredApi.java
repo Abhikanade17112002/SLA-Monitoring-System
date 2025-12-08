@@ -1,5 +1,6 @@
 package com.monitor_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -47,6 +48,7 @@ public class MonitoredApi {
     }
 
     @OneToOne(mappedBy = "monitoredApi", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private ThresholdConfig thresholdConfig;
 
     public String getApiId() {

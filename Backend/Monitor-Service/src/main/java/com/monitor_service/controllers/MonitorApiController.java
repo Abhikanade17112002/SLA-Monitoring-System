@@ -1,6 +1,7 @@
 package com.monitor_service.controllers;
 
 import com.monitor_service.dtos.ApiStatusResponse;
+import com.monitor_service.dtos.CreateMonitorApiResponse;
 import com.monitor_service.dtos.CreateMonitoredApiRequest;
 import com.monitor_service.dtos.UpdateMonitoredApiRequest;
 import com.monitor_service.entities.MonitoredApi;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -23,7 +23,7 @@ public class MonitorApiController {
 
     @PostMapping("/api")
     @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<String> createNewApi(@Valid @RequestBody CreateMonitoredApiRequest request){
+    public ResponseEntity<CreateMonitorApiResponse> createNewApi(@Valid @RequestBody CreateMonitoredApiRequest request){
         return
                 ResponseEntity.status(HttpStatus.CREATED)
                         .body(
