@@ -58,6 +58,9 @@ const AuthSlice = createSlice({
             state.error = null;
             localStorage.removeItem("user");
             localStorage.removeItem("jwtToken") ;
+            localStorage.removeItem("authToken") ;
+            localStorage.removeItem("monitoredApi") ;
+            localStorage.removeItem("userData") ;
        }
     } ,
     extraReducers: (builder) => {

@@ -1,9 +1,6 @@
 package com.authetication_service.service;
 
-import com.authetication_service.dtos.UserSignInRequestDTO;
-import com.authetication_service.dtos.UserSignInResponseDTO;
-import com.authetication_service.dtos.UserSignUpRequestDTO;
-import com.authetication_service.dtos.UserSignUpResponseDTO;
+import com.authetication_service.dtos.*;
 import com.authetication_service.entities.Role;
 import com.authetication_service.entities.User;
 import com.authetication_service.enums.UserRole;
@@ -21,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService  implements UserDetailsService {
@@ -146,5 +146,24 @@ public class UserService  implements UserDetailsService {
 
         return response ;
 
+    }
+
+    public List<FetchAllRegisteredUsersResponse> fetchAllRegisteredUsers() {
+
+        List<User> users = userRepository.findAll() ;
+
+        List<FetchAllRegisteredUsersResponse> response = users.stream().map((user)->{
+            FetchAllRegisteredUsersResponse u = new FetchAllRegisteredUsersResponse() ;
+
+            u.setUserName(user.getUserName());
+            u.setUserId(user.getUserId());
+            u.setRole(user.getRole().getUserRole().getUserRole());
+            u.setEmailId(user.getEmailId());
+            u.setFirstName(user.getFirstName());
+            u.setLastName(user.getLastName());
+            return u ;
+        }).collect(Collectors.toUnmodifiableList());
+
+        return response ;
     }
 }

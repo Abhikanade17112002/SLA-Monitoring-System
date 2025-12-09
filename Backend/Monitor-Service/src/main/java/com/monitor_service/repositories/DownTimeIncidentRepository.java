@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface DownTimeIncidentRepository extends JpaRepository<DownTimeIncident,String> {
     List<DownTimeIncident> findByMonitoredApi_ApiIdAndActiveTrue(String apiId);
-
+    List<DownTimeIncident> findTop50ByMonitoredApi_ApiIdOrderByStartedAtDesc(String apiId);
     List<DownTimeIncident> findByMonitoredApi_ApiIdOrderByStartedAtDesc(String apiId);
 }

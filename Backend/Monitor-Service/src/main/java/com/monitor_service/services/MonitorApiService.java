@@ -3,6 +3,7 @@ package com.monitor_service.services;
 import com.monitor_service.dtos.*;
 import com.monitor_service.entities.*;
 import com.monitor_service.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,7 @@ public class MonitorApiService {
     }
 
 
-    public String  updateApi(String apiId, UpdateMonitoredApiRequest request) {
+    public UpdateApiDetailResponse  updateApi(String apiId, UpdateMonitoredApiRequest request) {
 
         MonitoredApi api = monitoredApiRepository.findById(apiId)
                 .orElseThrow(() -> new RuntimeException("API not found with api Id ==> " + apiId));
@@ -66,11 +67,9 @@ public class MonitorApiService {
         api.setOwnerEmail(request.getOwnerEmail());
         api.setMonitorFrequencySec(request.getMonitorFrequencySec());
 
-        if (request.getActive() != null) {
-            api.setActive(request.getActive());
-        }
 
-        monitoredApiRepository.save(api);
+
+       MonitoredApi savedMonitoredApi =  monitoredApiRepository.save(api);
 
         // Update Threshold
         ThresholdConfig config = thresholdConfigRepository.findByMonitoredApi_ApiId(apiId);
@@ -87,9 +86,14 @@ public class MonitorApiService {
         if (request.getTimeoutMs() != null)
             config.setTimeoutMs(request.getTimeoutMs());
 
-        thresholdConfigRepository.save(config);
+       ThresholdConfig savedThresholdConfig = thresholdConfigRepository.save(config);
 
-        return "message: Updated Api With Api Id ==> " + apiId + " Succesfully" ;
+       UpdateApiDetailResponse response = new UpdateApiDetailResponse() ;
+
+       response.setMonitoredApi(savedMonitoredApi);
+       response.setThresholdConfig(savedThresholdConfig);
+
+        return response;
     }
 
 
@@ -143,5 +147,30 @@ public class MonitorApiService {
 
 
         return fetchDataResponse ;
+    }
+
+    public String deleteApiById(String apiId) {
+
+        monitoredApiRepository.deleteById(apiId);
+        return "Successfully Deleted Api With Id ==> " + apiId ;
+    }
+
+    public GetApiByIdResponse getApiById(String apiId) {
+
+        List<DownTimeIncident> downTimeIncidents = downTimeIncidentRepository.findTop50ByMonitoredApi_ApiIdOrderByStartedAtDesc(apiId) ;
+        List<HealthCheckLog> healthCheckLogs = healthCheckLogRepository.findTop50ByMonitoredApi_ApiIdOrderByTimestampDesc(apiId);
+        List<LatencyLog> latencyLogs = latencyLogRepository.findTop50ByMonitoredApi_ApiIdOrderByTimestampDesc(apiId) ;
+        ThresholdConfig thresholdConfigs = thresholdConfigRepository.findByMonitoredApi_ApiId(apiId) ;
+        MonitoredApi monitoredApi = monitoredApiRepository.findById(apiId).orElseThrow(()-> new EntityNotFoundException());
+
+        GetApiByIdResponse response = new GetApiByIdResponse() ;
+
+        response.setMonitoredApi(monitoredApi);
+        response.setDownTimeIncidentList(downTimeIncidents);
+        response.setLatencyLogs(latencyLogs);
+        response.setHealthCheckLogs(healthCheckLogs);
+        response.setThresholdConfig(thresholdConfigs);
+
+        return response ;
     }
 }

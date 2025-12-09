@@ -36,9 +36,13 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
         }
 
 
+        System.out.println("klklnjbkb");
+
+
         // 2. Extract authorization header
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-
+        System.out.println("authHeader");
+        System.out.println(authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return writeErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Missing or invalid Authorization header");
         }

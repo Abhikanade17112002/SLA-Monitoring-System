@@ -13,6 +13,10 @@ import AdminDashboard from "../components/AdminDashboard/AdminDashboard";
 import AdminManagedApis from "../components/AdminManagedApis/AdminManagedApis";
 import ApiThresholdConfigs from "../components/ApiThresholdConfigs/ApiThresholdConfigs";
 import IncidentDetailsCard from "../components/ApiIncidents/IncidentDetailsCard";
+import ApiDetails from "../components/ApiDetails/ApiDetails";
+import EditApiDetails from "../components/EditApiDetails/EditApiDetails";
+import AlertList from "../components/AlertsList/AlertsList";
+import UserManagement from "../components/UserManagement/UserManagement";
 
 
 export const router = createBrowserRouter([
@@ -59,11 +63,20 @@ export const router = createBrowserRouter([
     { path: "dashboard", element: <AdminDashboard /> },
     { path: "apis", element: <AdminManagedApis /> },
     { path: "thresholds", element: <ApiThresholdConfigs /> },
-    // { path: "alerts", element: <AlertsPage /> },
-    // { path: "users", element: <UsersManagement /> },
+    { path: "alerts", element: <AlertList /> },
+    { path: "users", element: <UserManagement /> },
     { path: "incidents", element: <IncidentDetailsCard /> },
     // { path: "reports", element: <SLAReports /> },
     // { path: "system", element: <SystemSettings /> }
+    {
+      path : "api/:apiId" ,
+      element :<ApiDetails/>
+    },
+    {
+      path : "api/update/:apiId" ,
+      element :<EditApiDetails/>
+
+    }
   ]
 },
   {

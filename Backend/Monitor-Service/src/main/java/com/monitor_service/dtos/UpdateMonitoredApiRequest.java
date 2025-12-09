@@ -18,8 +18,9 @@ public class UpdateMonitoredApiRequest {
     @Email
     private String ownerEmail;
 
-    private Boolean active;
+    private String monitoredApiId ;
 
+    private String thresholdConfigId ;
     // Threshold config
     private Integer expectedStatusCode;
     private Integer maxResponseTimeMs;
@@ -29,56 +30,65 @@ public class UpdateMonitoredApiRequest {
     public UpdateMonitoredApiRequest() {
     }
 
-    public UpdateMonitoredApiRequest(String apiName, String apiUrl, Integer monitorFrequencySec, String ownerEmail, Boolean active, Integer expectedStatusCode, Integer maxResponseTimeMs, Integer retryAttempts, Integer timeoutMs) {
+    public UpdateMonitoredApiRequest(String apiName, String apiUrl, Integer monitorFrequencySec, String ownerEmail, String monitoredApiId, String thresholdConfigId, Integer expectedStatusCode, Integer maxResponseTimeMs, Integer retryAttempts, Integer timeoutMs) {
         this.apiName = apiName;
         this.apiUrl = apiUrl;
         this.monitorFrequencySec = monitorFrequencySec;
         this.ownerEmail = ownerEmail;
-        this.active = active;
+        this.monitoredApiId = monitoredApiId;
+        this.thresholdConfigId = thresholdConfigId;
         this.expectedStatusCode = expectedStatusCode;
         this.maxResponseTimeMs = maxResponseTimeMs;
         this.retryAttempts = retryAttempts;
         this.timeoutMs = timeoutMs;
     }
 
-    public String getApiName() {
+    public @NotBlank String getApiName() {
         return apiName;
     }
 
-    public void setApiName(String apiName) {
+    public void setApiName(@NotBlank String apiName) {
         this.apiName = apiName;
     }
 
-    public String getApiUrl() {
+    public @NotBlank String getApiUrl() {
         return apiUrl;
     }
 
-    public void setApiUrl(String apiUrl) {
+    public void setApiUrl(@NotBlank String apiUrl) {
         this.apiUrl = apiUrl;
     }
 
-    public Integer getMonitorFrequencySec() {
+    public @Min(10) Integer getMonitorFrequencySec() {
         return monitorFrequencySec;
     }
 
-    public void setMonitorFrequencySec(Integer monitorFrequencySec) {
+    public void setMonitorFrequencySec(@Min(10) Integer monitorFrequencySec) {
         this.monitorFrequencySec = monitorFrequencySec;
     }
 
-    public String getOwnerEmail() {
+    public @NotBlank @Email String getOwnerEmail() {
         return ownerEmail;
     }
 
-    public void setOwnerEmail(String ownerEmail) {
+    public void setOwnerEmail(@NotBlank @Email String ownerEmail) {
         this.ownerEmail = ownerEmail;
     }
 
-    public Boolean getActive() {
-        return active;
+    public String getMonitoredApiId() {
+        return monitoredApiId;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setMonitoredApiId(String monitoredApiId) {
+        this.monitoredApiId = monitoredApiId;
+    }
+
+    public String getThresholdConfigId() {
+        return thresholdConfigId;
+    }
+
+    public void setThresholdConfigId(String thresholdConfigId) {
+        this.thresholdConfigId = thresholdConfigId;
     }
 
     public Integer getExpectedStatusCode() {
@@ -120,7 +130,8 @@ public class UpdateMonitoredApiRequest {
                 ", apiUrl='" + apiUrl + '\'' +
                 ", monitorFrequencySec=" + monitorFrequencySec +
                 ", ownerEmail='" + ownerEmail + '\'' +
-                ", active=" + active +
+                ", monitoredApiId='" + monitoredApiId + '\'' +
+                ", thresholdConfigId='" + thresholdConfigId + '\'' +
                 ", expectedStatusCode=" + expectedStatusCode +
                 ", maxResponseTimeMs=" + maxResponseTimeMs +
                 ", retryAttempts=" + retryAttempts +

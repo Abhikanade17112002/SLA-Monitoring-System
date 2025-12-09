@@ -71,4 +71,17 @@ public class AuthenticationController {
                 );
 
     }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/users")
+    ResponseEntity<List<FetchAllRegisteredUsersResponse>> fetchAllRegisteredUsers(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        userService.fetchAllRegisteredUsers()
+                );
+
+    }
+
+
 }

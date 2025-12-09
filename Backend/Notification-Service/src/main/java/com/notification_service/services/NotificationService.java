@@ -1,6 +1,7 @@
 package com.notification_service.services;
 
 import com.notification_service.dtos.AlertEventDTO;
+import com.notification_service.dtos.NotificationLogResponseDTO;
 import com.notification_service.entities.AlertConfig;
 import com.notification_service.entities.NotificationLog;
 import com.notification_service.repositories.AlertConfigRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -118,5 +120,18 @@ public class NotificationService {
         log.setCreatedAt(LocalDateTime.now());
 
         notificationLogRepository.save(log);
+    }
+
+    public NotificationLogResponseDTO getNotificationsLogs() {
+
+
+        List<NotificationLog> notificationLogResponseDTOList = notificationLogRepository.findTop60ByOrderByCreatedAtDesc();
+        NotificationLogResponseDTO response = new NotificationLogResponseDTO() ;
+
+        response.setNotificationLogList(notificationLogResponseDTOList);
+
+        return response ;
+
+
     }
 }

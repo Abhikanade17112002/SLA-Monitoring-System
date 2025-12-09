@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface HealthCheckLogRepository extends JpaRepository<HealthCheckLog,String> {
     List<HealthCheckLog> findTop20ByMonitoredApi_ApiIdOrderByTimestampDesc(String apiId);
+    List<HealthCheckLog> findTop50ByMonitoredApi_ApiIdOrderByTimestampDesc(String apiId);
+
 }

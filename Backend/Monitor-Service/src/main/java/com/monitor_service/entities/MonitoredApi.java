@@ -1,8 +1,11 @@
 package com.monitor_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "monitored_api")
@@ -47,9 +50,36 @@ public class MonitoredApi {
         this.thresholdConfig = thresholdConfig;
     }
 
-    @OneToOne(mappedBy = "monitoredApi", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "monitoredApi", cascade = CascadeType.ALL , orphanRemoval = true)
     @JsonManagedReference
     private ThresholdConfig thresholdConfig;
+
+    @OneToMany(
+            mappedBy = "monitoredApi",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @JsonBackReference
+    private List<LatencyLog> latencyLogs = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "monitoredApi",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @JsonBackReference
+    private List<HealthCheckLog> healthCheckLogs = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "monitoredApi",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true ,
+            fetch = FetchType.LAZY
+    )
+    @JsonBackReference
+    private List<DownTimeIncident> downTimeIncidents = new ArrayList<>();
 
     public String getApiId() {
         return apiId;

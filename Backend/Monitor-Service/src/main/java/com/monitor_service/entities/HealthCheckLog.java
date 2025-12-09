@@ -1,5 +1,6 @@
 package com.monitor_service.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class HealthCheckLog {
 
     @ManyToOne
     @JoinColumn(name = "api_id", nullable = false)
+    @JsonManagedReference
     private MonitoredApi monitoredApi;
 
     @Column(nullable = false)

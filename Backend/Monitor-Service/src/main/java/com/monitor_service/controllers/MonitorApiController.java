@@ -29,9 +29,21 @@ public class MonitorApiController {
 
     }
 
+    @DeleteMapping("/api/{apiId}")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<String> deleteApiById(@PathVariable(name = "apiId") String apiId){
+        return
+                ResponseEntity.status(HttpStatus.OK)
+                        .body(
+                                monitorApiService.deleteApiById( apiId )
+                        ) ;
+
+    }
+
+
     @PutMapping("/api/{apiId}")
     @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<String> updateApi( @PathVariable(name = "apiId" ) String apiId ,@Valid @RequestBody UpdateMonitoredApiRequest request ){
+    public ResponseEntity<UpdateApiDetailResponse> updateApi( @PathVariable(name = "apiId" ) String apiId ,@Valid @RequestBody UpdateMonitoredApiRequest request ){
         return ResponseEntity.status(
                 HttpStatus.OK
         ).body(
@@ -66,6 +78,16 @@ public class MonitorApiController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         monitorApiService.getAdminData( )
+                ) ;
+
+    }
+
+    @GetMapping("/{apiId}")
+    @PreAuthorize("hasAnyAuthority('Admin')")
+    public ResponseEntity<GetApiByIdResponse> getApiById( @PathVariable(name = "apiId") String apiId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        monitorApiService.getApiById(apiId )
                 ) ;
 
     }
