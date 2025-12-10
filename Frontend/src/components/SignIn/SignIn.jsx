@@ -40,6 +40,11 @@ const SignIn = () => {
     
 
     if (response.type === "auth/signInUser/fulfilled") {
+      console.log("Response From Sign In ");
+      
+      console.log(response.payload);
+      localStorage.setItem("jwtToken",JSON.stringify(response.payload.jwtToken))
+      
       navigate("/");
     }
   };

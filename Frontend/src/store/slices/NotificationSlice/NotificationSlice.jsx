@@ -10,11 +10,15 @@ const api = axios.create({
 
 export const fetchTop60Alerts = createAsyncThunk(
   "monitor/fetchAlerts",
-  async (thunkAPI) => {
+  async (a,thunkAPI) => {
     try {
         console.log("Sending ==> " + `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}`);
         
-      const response = await api.get("");
+      const response = await axios.get(`${import.meta.env.VITE_ALERTING_SERVICE_BASE_URL}`, {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}` 
+                }
+              });
       return response.data;
     } catch (error) {
         console.log(error);

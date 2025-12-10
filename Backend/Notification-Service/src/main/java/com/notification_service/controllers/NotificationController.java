@@ -26,7 +26,6 @@ public class NotificationController {
 
 
     @GetMapping
-
     public ResponseEntity<NotificationLogResponseDTO> getNotificationsLogs() {
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -29,6 +29,7 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest() ;
         String path = request.getURI().getPath() ;
         System.out.println("Path ==> " + path);
+        String authorizationHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         // 1. Allow unprotected paths (login, register)
         if (path.contains("/auth/")) {
@@ -49,12 +50,19 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
 
         String token = authHeader.substring(7);
 
+
+        System.out.println("TOKEN ==> " + token);
+
         // 2. Invalid token
         try {
             if (!jwtUtil.validateToken(token)) {
+
+                System.out.println("sdnjdbfksdf");
                 return writeErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Invalid or expired token");
             }
         } catch (Exception ex) {
+            System.out.println("Caught ==> ");
+            System.out.println(ex);
             return writeErrorResponse(exchange, HttpStatus.UNAUTHORIZED, ex.getMessage());
         }
 
@@ -67,6 +75,7 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
 
         // 5. Add identity headers for downstream services
         ServerHttpRequest modifiedReq = request.mutate()
+                .header("Authorization", authorizationHeader)
                 .header("X-User-Id", userId)
                 .header("X-Roles", role)
                 .build();
@@ -80,7 +89,7 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
     private Mono<Void> writeErrorResponse(ServerWebExchange exchange, HttpStatus status, String message) {
         exchange.getResponse().setStatusCode(status);
         exchange.getResponse().getHeaders().add("Content-Type", "application/json");
-
+        System.out.println("ooooooooooooo");
         Map<String, Object> errorBody = new HashMap<>();
         errorBody.put("timestamp", LocalDateTime.now().toString());
         errorBody.put("status", status.value());
