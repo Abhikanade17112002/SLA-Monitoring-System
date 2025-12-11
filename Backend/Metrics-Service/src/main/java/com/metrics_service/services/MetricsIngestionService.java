@@ -219,6 +219,8 @@ public class MetricsIngestionService {
     public void saveUptime(UpTimeEventDTO dto) {
 
         // SAVE ENTRY
+
+        System.out.println("Receive  Uptine Event ==> " + dto );
         UpTimeMetrics metric = new UpTimeMetrics();
         metric.setApiId(dto.getApiId());
         metric.setUp(dto.isUp());
@@ -230,6 +232,9 @@ public class MetricsIngestionService {
         // Fetch last 2 records to detect transitions
         List<UpTimeMetrics> history = upTimeMetricsRepository
                 .findTop2ByApiIdOrderByTimestampDesc(dto.getApiId());
+
+
+        System.out.println("History ==> " + dto.getApiId() + " " + history);
 
         boolean isCurrentUp = dto.isUp();
         boolean wasPreviouslyUp = history.size() > 1 && history.get(1).isUp();
@@ -274,6 +279,7 @@ public class MetricsIngestionService {
     ======================================================================= */
     public void saveDowntime(DownTimeEventDTO dto) {
 
+        System.out.println("Receive  Downtime Event ==> " + dto );
         DownTimeIncident incident = new DownTimeIncident();
         incident.setApiId(dto.getApiId());
         incident.setEventType(dto.getEventType());

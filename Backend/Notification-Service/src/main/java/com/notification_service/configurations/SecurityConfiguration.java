@@ -29,7 +29,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain getSecurityFilterChainBean(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(http -> http
                         .requestMatchers("/actuator/**", "/notifications/**").permitAll()

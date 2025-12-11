@@ -1,9 +1,11 @@
 package com.notification_service.dtos;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class AlertConfigRequestDTO {
 
     private String apiId;

@@ -53,17 +53,16 @@ public class MonitorCoreService {
 
     public void monitorAllApis(){
         List<MonitoredApi>  apis = monitoredApiRepository.findByActiveTrue() ;
-
-        System.out.println("Hello");
-
         apis.forEach(( api )->{
 
             // Get The Threshold configuration For Each Api
             ThresholdConfig thresholdConfig = thresholdConfigRepository.findByMonitoredApi_ApiId(  api.getApiId()  ) ;
 
-            System.out.println("Trying ==> " + api.getApiName());
+            System.out.println("Trying ==> " + api.getApiName() + " thresholdConfig ==> " + thresholdConfig);
 
            HttpPingService.HttpResult  httpResult =  httpPingService.ping( api , thresholdConfig) ;
+
+            System.out.println("httpResult ==> " + httpResult);
 
 
             LocalDateTime now = LocalDateTime.now() ;
