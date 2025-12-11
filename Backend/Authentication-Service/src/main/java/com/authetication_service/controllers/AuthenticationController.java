@@ -63,7 +63,7 @@ public class AuthenticationController {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping
-    ResponseEntity<List<CreateRoleResponseDTO>> getAllUserRoles(){
+    public ResponseEntity<List<CreateRoleResponseDTO>> getAllUserRoles(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(
@@ -74,7 +74,7 @@ public class AuthenticationController {
 
     @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("/users")
-    ResponseEntity<List<FetchAllRegisteredUsersResponse>> fetchAllRegisteredUsers(){
+    public  ResponseEntity<List<FetchAllRegisteredUsersResponse>> fetchAllRegisteredUsers(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(
@@ -82,6 +82,20 @@ public class AuthenticationController {
                 );
 
     }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @DeleteMapping("/delete/{apiId}")
+    public ResponseEntity<Boolean> deleteUserByUserId(@PathVariable( name = "apiId") String apiId){
+        return ResponseEntity.status(
+                HttpStatus.OK
+
+        )
+                .body(
+                        userService.deleteUserByUserId(apiId)
+                );
+    }
+
+
 
 
 }

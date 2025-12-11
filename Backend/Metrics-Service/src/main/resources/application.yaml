@@ -11,7 +11,7 @@ spring:
     name: Metrics-Service
 
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
+    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
     username: postgres.ghtcntfszwoolozbtltf
     password: Abhi@17112002
     driver-class-name: org.postgresql.Driver

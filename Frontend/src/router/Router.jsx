@@ -17,6 +17,8 @@ import ApiDetails from "../components/ApiDetails/ApiDetails";
 import EditApiDetails from "../components/EditApiDetails/EditApiDetails";
 import AlertList from "../components/AlertsList/AlertsList";
 import UserManagement from "../components/UserManagement/UserManagement";
+import SLAReportPopUpModal from "../components/SLAReportPopUpModal/SLAReportPopUpModal";
+import AdminSLAReport from "../components/AdminSLAReport/AdminSLAReport";
 
 
 export const router = createBrowserRouter([
@@ -66,7 +68,7 @@ export const router = createBrowserRouter([
     { path: "alerts", element: <AlertList /> },
     { path: "users", element: <UserManagement /> },
     { path: "incidents", element: <IncidentDetailsCard /> },
-    // { path: "reports", element: <SLAReports /> },
+    { path: "reports", element: <AdminSLAReport /> },
     // { path: "system", element: <SystemSettings /> }
     {
       path : "api/:apiId" ,

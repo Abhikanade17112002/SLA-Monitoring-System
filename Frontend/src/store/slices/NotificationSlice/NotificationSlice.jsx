@@ -1,22 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_ALERTING_SERVICE_BASE_URL,
-  headers: {
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}`,
-  },
-});
 
 export const fetchTop60Alerts = createAsyncThunk(
   "monitor/fetchAlerts",
   async (a,thunkAPI) => {
     try {
-        console.log("Sending ==> " + `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}`);
+        console.log("Sending ==> " + `${JSON.parse(localStorage.getItem("jwtToken"))}`);
         
       const response = await axios.get(`${import.meta.env.VITE_ALERTING_SERVICE_BASE_URL}`, {
                 headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}` 
+                    Authorization: `${JSON.parse(localStorage.getItem("jwtToken"))}` 
                 }
               });
       return response.data;

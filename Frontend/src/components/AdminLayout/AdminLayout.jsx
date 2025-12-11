@@ -29,7 +29,6 @@ const AdminLayout = () => {
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/admin/dashboard" },
     { name: "Manage APIs", icon: <Network size={20} />, path: "/admin/apis" },
-    { name: "Thresholds", icon: <Settings size={20} />, path: "/admin/thresholds" },
     { name: "Alerts", icon: <Bell size={20} />, path: "/admin/alerts" },
     { name: "Users", icon: <Users size={20} />, path: "/admin/users" },
     { name: "Incidents", icon: <AlertTriangle size={20} />, path: "/admin/incidents" },

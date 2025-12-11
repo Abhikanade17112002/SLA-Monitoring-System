@@ -11,4 +11,6 @@ public interface UpTimeMetricsRepository extends JpaRepository<UpTimeMetrics,Str
 
     // For SLA uptime percentage calculation
     List<UpTimeMetrics> findByApiIdOrderByTimestampDesc(String apiId);
+
+    List<UpTimeMetrics> findTop2ByApiIdOrderByTimestampDesc(String apiId);
 }

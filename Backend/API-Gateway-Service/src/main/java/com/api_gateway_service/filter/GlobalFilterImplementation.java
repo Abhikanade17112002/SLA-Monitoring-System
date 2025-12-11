@@ -48,7 +48,7 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
             return writeErrorResponse(exchange, HttpStatus.UNAUTHORIZED, "Missing or invalid Authorization header");
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.split(" ")[1];
 
 
         System.out.println("TOKEN ==> " + token);

@@ -30,6 +30,8 @@ public class NotificationService {
 
     public void processAlert(AlertEventDTO alert) {
 
+
+        System.out.println("ALERT ==> "+ alert);
         Optional<AlertConfig> configOpt = alertConfigRepository.findByApiId(alert.getApiId());
 
         if (configOpt.isEmpty()) {

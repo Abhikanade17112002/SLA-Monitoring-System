@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: import.meta.env.VITE_MONITORING_SERVICE_BASE_URL,
   headers: {
-    Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}`,
+    Authorization: `${JSON.parse(localStorage.getItem("jwtToken"))}`,
   },
 });
 
@@ -56,7 +56,7 @@ export const handleFetchIndividualApi = createAsyncThunk(
         `${import.meta.env.VITE_MONITORING_SERVICE_BASE_URL}/${apiId}`,
         {
           headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}`
+            Authorization: `${JSON.parse(localStorage.getItem("jwtToken"))}`
           }
         }
       );
@@ -81,12 +81,12 @@ export const handleFetchMonitoredApisData = createAsyncThunk(
     async ( credentials , thunkAPI) => {
         try {
 
-            console.log("Received Request In handleFetchMonitoredApisData ==> " +" Bearer" +  `${localStorage.getItem("jwtToken")}` ) ;
+            console.log("Received Request In handleFetchMonitoredApisData ==> " +`${localStorage.getItem("jwtToken")}` ) ;
             console.log(credentials);
             const response = await axios
               .get(`${import.meta.env.VITE_MONITORING_SERVICE_BASE_URL}/fetchdata/admin`, {
                 headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwtToken"))}` 
+                    Authorization: `${JSON.parse(localStorage.getItem("jwtToken"))}` 
                 }
               })
             return response.data;

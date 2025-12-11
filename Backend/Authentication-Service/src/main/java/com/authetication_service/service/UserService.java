@@ -139,7 +139,7 @@ public class UserService  implements UserDetailsService {
         response.setEmailId(authenticatedUser.getEmailId());
         response.setFirstName(authenticatedUser.getFirstName());
         response.setLastName(authenticatedUser.getLastName());
-        response.setJwtToken(authJwtToken);
+        response.setJwtToken("Bearer " + authJwtToken);
         response.setRole(authenticatedUser.getRole().getUserRole().getUserRole());
 
 
@@ -165,5 +165,22 @@ public class UserService  implements UserDetailsService {
         }).collect(Collectors.toUnmodifiableList());
 
         return response ;
+    }
+
+    public Boolean deleteUserByUserId(String apiId) {
+
+        try {
+
+
+
+            System.out.println("Received Api Id  ==> " + apiId);
+
+
+            userRepository.deleteById(apiId);
+
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

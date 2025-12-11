@@ -13,7 +13,7 @@ public class ApiMonitorScheduler {
     private MonitorCoreService monitorCoreService ;
 
 //3600000
-    @Scheduled( fixedRate =  600000 ) // Runs Every 1 hour Seconds
+    @Scheduled( fixedRate =  60000 ) // Runs Every 1 hour Seconds
     public void run(){
         System.out.println("🔄 Scheduler Triggered at: " + LocalDateTime.now());
         monitorCoreService.monitorAllApis();
