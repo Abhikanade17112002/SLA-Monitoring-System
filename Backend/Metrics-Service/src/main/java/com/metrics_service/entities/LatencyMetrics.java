@@ -12,6 +12,8 @@ public class LatencyMetrics {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String apiName ;
+
     @Column(nullable = false)
     private String apiId;
 
@@ -24,11 +26,24 @@ public class LatencyMetrics {
     public LatencyMetrics() {
     }
 
-    public LatencyMetrics(String id, String apiId, Integer latencyMs, LocalDateTime timestamp) {
+    public LatencyMetrics(String id,String apiName , String apiId, Integer latencyMs, LocalDateTime timestamp) {
         this.id = id;
+        this.apiName =apiName ;
         this.apiId = apiId;
         this.latencyMs = latencyMs;
         this.timestamp = timestamp;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     // Getters and Setters
@@ -64,6 +79,7 @@ public class LatencyMetrics {
     public String toString() {
         return "LatencyMetrics{" +
                 "id='" + id + '\'' +
+                ", apiName='" + apiName + '\'' +
                 ", apiId='" + apiId + '\'' +
                 ", latencyMs=" + latencyMs +
                 ", timestamp=" + timestamp +

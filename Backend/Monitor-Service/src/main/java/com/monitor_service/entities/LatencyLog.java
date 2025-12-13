@@ -59,4 +59,14 @@ public class LatencyLog {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "LatencyLog{" +
+                "latencyId='" + latencyId + '\'' +
+                ", monitoredApi=" + monitoredApi +
+                ", responseTimeMs=" + responseTimeMs +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

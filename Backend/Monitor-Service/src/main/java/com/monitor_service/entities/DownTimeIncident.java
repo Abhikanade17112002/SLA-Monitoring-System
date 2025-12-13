@@ -64,4 +64,15 @@ public class DownTimeIncident {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "DownTimeIncident{" +
+                "incidentId='" + incidentId + '\'' +
+                ", monitoredApi=" + monitoredApi +
+                ", startedAt=" + startedAt +
+                ", resolvedAt=" + resolvedAt +
+                ", active=" + active +
+                '}';
+    }
 }

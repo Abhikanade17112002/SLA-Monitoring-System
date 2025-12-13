@@ -3,7 +3,7 @@ package com.metrics_service.dtos;
 import java.time.LocalDateTime;
 
 public class AlertEventDTO {
-
+    private String apiName ;
     private String apiId;
     private String alertType; // DOWN, RECOVERED, SLOW
     private String message;
@@ -12,13 +12,22 @@ public class AlertEventDTO {
 
     public AlertEventDTO() {}
 
-    public AlertEventDTO(String apiId, String alertType, String message,
+    public AlertEventDTO(String apiId, String apiName , String alertType, String message,
                          Integer latencyMs, LocalDateTime timestamp) {
         this.apiId = apiId;
         this.alertType = alertType;
         this.message = message;
         this.latencyMs = latencyMs;
         this.timestamp = timestamp;
+        this.apiName = apiName ;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     public String getApiId() { return apiId; }
@@ -36,7 +45,8 @@ public class AlertEventDTO {
     @Override
     public String toString() {
         return "AlertEventDTO{" +
-                "apiId='" + apiId + '\'' +
+                "apiName='" + apiName + '\'' +
+                ", apiId='" + apiId + '\'' +
                 ", alertType='" + alertType + '\'' +
                 ", message='" + message + '\'' +
                 ", latencyMs=" + latencyMs +

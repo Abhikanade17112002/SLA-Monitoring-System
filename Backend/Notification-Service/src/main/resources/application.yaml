@@ -22,9 +22,9 @@ spring:
             enable: true
 
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
-    username: postgres.plhvkegmtiuaozythvyz
-    password: Abhi@17112002
+    url: jdbc:postgresql://localhost:5432/Notification-Service
+    username: abhishekkanade
+    password: pass@123   # your local password
     driver-class-name: org.postgresql.Driver
 
     hikari:
@@ -38,7 +38,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+#    show-sql: true
 
 
   cloud:
@@ -72,10 +72,10 @@ eureka:
 
 
 
-  logging:
-    level:
-      org:
-        springframework:
-          security: DEBUG
-          boot:
-            actuate: DEBUG
+#  logging:
+#    level:
+#      org:
+#        springframework:
+#          security: DEBUG
+#          boot:
+#            actuate: DEBUG

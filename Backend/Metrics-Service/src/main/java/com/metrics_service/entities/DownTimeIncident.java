@@ -12,6 +12,8 @@ public class DownTimeIncident {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String apiName ;
+
     @Column(nullable = false)
     private String apiId;
 
@@ -26,12 +28,21 @@ public class DownTimeIncident {
     public DownTimeIncident() {
     }
 
-    public DownTimeIncident(String id, String apiId, String eventType, LocalDateTime startedAt, LocalDateTime resolvedAt) {
+    public DownTimeIncident(String id, String apiName, String apiId, String eventType, LocalDateTime startedAt, LocalDateTime resolvedAt) {
         this.id = id;
         this.apiId = apiId;
         this.eventType = eventType;
         this.startedAt = startedAt;
         this.resolvedAt = resolvedAt;
+        this.apiName = apiName ;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     // Getters and Setters
@@ -79,6 +90,7 @@ public class DownTimeIncident {
     public String toString() {
         return "DownTimeIncident{" +
                 "id='" + id + '\'' +
+                ", apiName='" + apiName + '\'' +
                 ", apiId='" + apiId + '\'' +
                 ", eventType='" + eventType + '\'' +
                 ", startedAt=" + startedAt +

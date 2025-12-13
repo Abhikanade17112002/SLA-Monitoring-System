@@ -1,153 +1,3 @@
-//package com.metrics_service.services;
-//
-//import com.metrics_service.clients.NotificationClient;
-//import com.metrics_service.dtos.AlertEventDTO;
-//import com.metrics_service.dtos.DownTimeEventDTO;
-//import com.metrics_service.dtos.LatencyEventDTO;
-//import com.metrics_service.dtos.UpTimeEventDTO;
-//import com.metrics_service.entities.DownTimeIncident;
-//import com.metrics_service.entities.LatencyMetrics;
-//import com.metrics_service.entities.UpTimeMetrics;
-//import com.metrics_service.repositories.AggregatedSLARepository;
-//import com.metrics_service.repositories.DownTimeIncidentRepository;
-//import com.metrics_service.repositories.LatencyMetricsRepository;
-//import com.metrics_service.repositories.UpTimeMetricsRepository;
-//import io.micrometer.core.instrument.binder.system.UptimeMetrics;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class MetricsIngestionService {
-//
-//    @Autowired
-//    private NotificationClient notificationClient ;
-//
-//    @Autowired
-//    private LatencyMetricsRepository latencyMetricsRepository ;
-//    @Autowired
-//    private UpTimeMetricsRepository upTimeMetricsRepository ;
-//    @Autowired
-//    private DownTimeIncidentRepository downTimeIncidentRepository ;
-//    @Autowired
-//    private AggregatedSLARepository aggregatedSLARepository ;
-//
-//
-//    public void saveLatency(LatencyEventDTO dto) {
-//
-//        LatencyMetrics metric = new LatencyMetrics();
-//        metric.setApiId(dto.getApiId());
-//        metric.setLatencyMs(dto.getLatencyMs());
-//        metric.setTimestamp(dto.getTimestamp());
-//
-//        latencyMetricsRepository.save(metric);
-//
-//        // --- TRIGGER SLOW ALERT ---
-//        // For simplicity: threshold = 500ms (later: read from ThresholdConfig table)
-//        if (dto.getLatencyMs() > 500) {
-//
-//            AlertEventDTO alert = new AlertEventDTO(
-//                    dto.getApiId(),
-//                    "SLOW",
-//                    "Latency exceeded threshold: " + dto.getLatencyMs() + " ms",
-//                    dto.getLatencyMs(),
-//                    dto.getTimestamp()
-//            );
-//
-//            notificationClient.sendAlert(alert);
-//        }
-//    }
-//
-//    public void saveUptime(UpTimeEventDTO dto) {
-//
-//        UpTimeMetrics m = new UpTimeMetrics();
-//        m.setApiId(dto.getApiId());
-//        m.setUp(dto.isUp());
-//        m.setStatusCode(dto.getStatusCode());
-//        m.setErrorMessage(dto.getErrorMessage());
-//        m.setTimestamp(dto.getTimestamp());
-//
-//       upTimeMetricsRepository.save(m);
-//
-//        // --------------------------
-//        // TRIGGER DOWNTIME ALERT
-//        // --------------------------
-//        List<UpTimeMetrics> upTimeMetrics = upTimeMetricsRepository.findByApiIdOrderByTimestampDesc(dto.getApiId()) ;
-//        System.out.println("upTimeMetrics ==> " + upTimeMetrics );
-//        if (!dto.isUp() && upTimeMetrics.size() == 1 ) {
-//            AlertEventDTO alert = new AlertEventDTO(
-//                    dto.getApiId(),
-//                    "DOWN",
-//                    "API is DOWN. Error: " + dto.getErrorMessage(),
-//                    null,
-//                    dto.getTimestamp()
-//            );
-//            notificationClient.sendAlert(alert);
-//        }
-//        else if( !dto.isUp() && upTimeMetrics.get(0).isUp()){
-//            AlertEventDTO alert = new AlertEventDTO(
-//                    dto.getApiId(),
-//                    "DOWN",
-//                    "API is DOWN. Error: " + dto.getErrorMessage(),
-//                    null,
-//                    dto.getTimestamp()
-//            );
-//            notificationClient.sendAlert(alert);
-//        }
-//
-//        // --------------------------
-//        // TRIGGER RECOVERY ALERT
-//        // --------------------------
-//        if (dto.isUp() && upTimeMetrics.size() == 1) {
-//            AlertEventDTO alert = new AlertEventDTO(
-//                    dto.getApiId(),
-//                    "RECOVERED",
-//                    "API has recovered with status: " + dto.getStatusCode(),
-//                    null,
-//                    dto.getTimestamp()
-//            );
-//            notificationClient.sendAlert(alert);
-//        }
-//        else if( dto.isUp() &&  !upTimeMetrics.get(0).isUp()){
-//
-//            AlertEventDTO alert = new AlertEventDTO(
-//                    dto.getApiId(),
-//                    "RECOVERED",
-//                    "API has recovered with status: " + dto.getStatusCode(),
-//                    null,
-//                    dto.getTimestamp()
-//            );
-//            notificationClient.sendAlert(alert);
-//
-//        }
-//    }
-//
-//    public void saveDowntime(DownTimeEventDTO dto) {
-//
-//        DownTimeIncident incident = new DownTimeIncident();
-//        incident.setApiId(dto.getApiId());
-//        incident.setEventType(dto.getEventType());
-//        incident.setStartedAt(dto.getStartedAt());
-//        incident.setResolvedAt(dto.getResolvedAt());
-//
-//        downTimeIncidentRepository.save(incident);
-//
-//        // forward event as alert to notification service
-//        AlertEventDTO alert = new AlertEventDTO(
-//                dto.getApiId(),
-//                dto.getEventType(),
-//                "Downtime event: " + dto.getEventType(),
-//                null,
-//                dto.getStartedAt()
-//        );
-//
-//        notificationClient.sendAlert(alert);
-//    }
-//}
-
-
-
 package com.metrics_service.services;
 
 import com.metrics_service.clients.NotificationClient;
@@ -185,28 +35,34 @@ public class MetricsIngestionService {
     @Autowired
     private AggregatedSLARepository aggregatedSLARepository;
 
-
-    /* =======================================================================
-                                LATENCY EVENT
-    ======================================================================= */
     public void saveLatency(LatencyEventDTO dto) {
 
         LatencyMetrics metric = new LatencyMetrics();
         metric.setApiId(dto.getApiId());
+        metric.setApiName(dto.getApiName());
         metric.setLatencyMs(dto.getLatencyMs());
         metric.setTimestamp(dto.getTimestamp());
 
         latencyMetricsRepository.save(metric);
 
+        System.out.println();
+        System.out.println("Latency Metrics ==> " + metric);
+        System.out.println();
+
         // 🔥 Trigger Slow API Alert — Threshold hardcoded (500ms)
         if (dto.getLatencyMs() > 500) {
+
+            System.out.println("Triggering Latency Alter For ==> " + dto.getApiId());
             AlertEventDTO alert = new AlertEventDTO(
                     dto.getApiId(),
+                    dto.getApiName(),
                     "SLOW",
                     "Latency exceeded threshold: " + dto.getLatencyMs() + " ms",
                     dto.getLatencyMs(),
                     dto.getTimestamp()
             );
+
+            System.out.println("SENDING THE SLOW EVENT ==> " );
             notificationClient.sendAlert(alert);
         }
     }
@@ -220,83 +76,104 @@ public class MetricsIngestionService {
 
         // SAVE ENTRY
 
-        System.out.println("Receive  Uptine Event ==> " + dto );
         UpTimeMetrics metric = new UpTimeMetrics();
         metric.setApiId(dto.getApiId());
+        metric.setApiName(dto.getApiName());
         metric.setUp(dto.isUp());
         metric.setStatusCode(dto.getStatusCode());
         metric.setErrorMessage(dto.getErrorMessage());
         metric.setTimestamp(dto.getTimestamp());
         upTimeMetricsRepository.save(metric);
 
+        System.out.println();
+        System.out.println("Received Uptime metrics  ==> " + metric );
+        System.out.println();
+
         // Fetch last 2 records to detect transitions
         List<UpTimeMetrics> history = upTimeMetricsRepository
                 .findTop2ByApiIdOrderByTimestampDesc(dto.getApiId());
 
-
-        System.out.println("History ==> " + dto.getApiId() + " " + history);
-
+        System.out.println();
+        System.out.println();
+        System.out.println("History ==>    " + dto.getApiId() + "       " + history);
+        System.out.println();
+        System.out.println();
         boolean isCurrentUp = dto.isUp();
         boolean wasPreviouslyUp = history.size() > 1 && history.get(1).isUp();
 
         /* -----------------------------------------------------------
                          DOWNTIME DETECTED
         ------------------------------------------------------------ */
-        System.out.println("HERE 1");
+
         if (!isCurrentUp && wasPreviouslyUp) {
-            System.out.println("HERE 2");
+
             AlertEventDTO alert = new AlertEventDTO(
                     dto.getApiId(),
+                    dto.getApiName(),
                     "DOWN",
                     "API DOWN. Error: " + dto.getErrorMessage(),
                     null,
                     dto.getTimestamp()
             );
+
+            System.out.println();
+            System.out.println();
+            System.out.println("Sending Down Time Event ==> " + alert);
+            System.out.println();
             notificationClient.sendAlert(alert);
+            System.out.println();
         }
 
         /* -----------------------------------------------------------
                          RECOVERY DETECTED
         ------------------------------------------------------------ */
         if (isCurrentUp && !wasPreviouslyUp) {
-            System.out.println("HERE 3");
+
             AlertEventDTO alert = new AlertEventDTO(
                     dto.getApiId(),
+                    dto.getApiName(),
                     "RECOVERED",
                     "API RECOVERED with status: " + dto.getStatusCode(),
                     null,
                     dto.getTimestamp()
             );
+            System.out.println();
+            System.out.println();
+            System.out.println("Sending RECOVERED Time Event ==> " + alert);
+            System.out.println();
             notificationClient.sendAlert(alert);
+            System.out.println();
         }
 
-        // First ever event → No transition detection needed
     }
 
-
-    /* =======================================================================
-                            DOWNTIME (START / END)
-    ======================================================================= */
     public void saveDowntime(DownTimeEventDTO dto) {
 
-        System.out.println("Receive  Downtime Event ==> " + dto );
+        System.out.println();
+        System.out.println("Received DownTime metrics  ==> " + dto );
+        System.out.println();
         DownTimeIncident incident = new DownTimeIncident();
         incident.setApiId(dto.getApiId());
+        incident.setApiName(dto.getApiName());
         incident.setEventType(dto.getEventType());
         incident.setStartedAt(dto.getStartedAt());
         incident.setResolvedAt(dto.getResolvedAt());
 
         downTimeIncidentRepository.save(incident);
 
-        // Forward to Notification Service
-        AlertEventDTO alert = new AlertEventDTO(
-                dto.getApiId(),
-                dto.getEventType(),
-                "Downtime event: " + dto.getEventType(),
-                null,
-                dto.getStartedAt()
-        );
-
-        notificationClient.sendAlert(alert);
+//        // Forward to Notification Service
+//        AlertEventDTO alert = new AlertEventDTO(
+//                dto.getApiId(),
+//                dto.getApiName(),
+//                dto.getEventType(),
+//                "Downtime event: " + dto.getEventType(),
+//                null,
+//                dto.getStartedAt()
+//        );
+//        System.out.println();
+//        System.out.println();
+//        System.out.println("Sending Downtime Time Event ==> " + alert);
+//        System.out.println();
+//        notificationClient.sendAlert(alert);
     }
 }

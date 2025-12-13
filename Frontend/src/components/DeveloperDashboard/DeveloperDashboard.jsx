@@ -27,7 +27,7 @@ ChartJS.register(
   Legend
 );
 
-const AdminDashboard = () => {
+const DeveloperDashboard = () => {
   const navigate = useNavigate() ;
   const dispatch = useDispatch();
   const [monitoredData, setMonitoredData] = useState({});
@@ -113,7 +113,7 @@ console.log(monitoredData);
   isLoading ? <Loader></Loader> :     <div className="text-white space-y-10">
       {/* Page Title */}
       <h1 className="text-4xl font-extrabold tracking-wide drop-shadow mb-4">
-        Admin Dashboard
+        Developer Dashboard
       </h1>
 
       {/* KPI CARDS */}
@@ -227,4 +227,4 @@ const Card = ({ icon, label, value, color = "text-blue-400" }) => (
   </div>
 );
 
-export default AdminDashboard;
+export default DeveloperDashboard;

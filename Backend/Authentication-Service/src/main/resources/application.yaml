@@ -12,19 +12,17 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
-    username: postgres.rjlmozorrqoxmmtthboz
-    password: Abhi@17112002
+    url: jdbc:postgresql://localhost:5432/Authentication-Service
+    username: abhishekkanade
+    password: pass@123   # your local password
     driver-class-name: org.postgresql.Driver
 
-
     hikari:
-      maximum-pool-size: 3          # Keep this LOW for Supabase pooler
-      minimum-idle: 1                # Minimum idle connections
-      connection-timeout: 30000      # 30 seconds
-      idle-timeout: 600000           # 10 minutes
-      max-lifetime: 1800000          # 30 minutes
-      leak-detection-threshold: 60000 # Detect connection leaks after 60 seconds
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000 # Detect connection leaks after 60 seconds
 
 
   jpa:

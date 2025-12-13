@@ -19,6 +19,11 @@ import AlertList from "../components/AlertsList/AlertsList";
 import UserManagement from "../components/UserManagement/UserManagement";
 import SLAReportPopUpModal from "../components/SLAReportPopUpModal/SLAReportPopUpModal";
 import AdminSLAReport from "../components/AdminSLAReport/AdminSLAReport";
+import SessionExpired from "../components/Error/SessionExpired";
+import DeveloperLayout from "../components/DeveloperLayout/DeveloperLayout";
+import DeveloperDashboard from "../components/DeveloperDashboard/DeveloperDashboard";
+import DeveloperManagedApis from "../components/DeveloperManagedApis/DeveloperManagedApis";
+import DeveloperSLAReport from "../components/DeveloperSLAReport/DeveloperSLAReport";
 
 
 export const router = createBrowserRouter([
@@ -81,9 +86,36 @@ export const router = createBrowserRouter([
     }
   ]
 },
+{
+  path: "/developer",
+  element: <ProtectedRoute  allowedRoles={["DEVELOPER","ADMIN"]}> <DeveloperLayout /> </ProtectedRoute>,
+  children: [
+    { path: "dashboard", element: <DeveloperDashboard /> },
+    { path: "apis", element: <DeveloperManagedApis /> },
+    { path: "thresholds", element: <ApiThresholdConfigs /> },
+    { path: "alerts", element: <AlertList /> },
+    { path: "users", element: <UserManagement /> },
+    { path: "incidents", element: <IncidentDetailsCard /> },
+    { path: "reports", element: <DeveloperSLAReport /> },
+
+    {
+      path : "api/:apiId" ,
+      element :<ApiDetails/>
+    },
+    {
+      path : "api/update/:apiId" ,
+      element :<EditApiDetails/>
+
+    }
+  ]
+},
   {
     path:"/unauthorized" ,
     element : <Unauthorized/>
+  },
+  {
+    path:"/sessionexpired" ,
+    element : <SessionExpired/>
   }
 
 ]);

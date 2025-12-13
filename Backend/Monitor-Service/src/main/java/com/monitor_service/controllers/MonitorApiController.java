@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -54,6 +56,19 @@ public class MonitorApiController {
     @GetMapping("/api/list")
     @PreAuthorize("hasAnyAuthority('Admin','Developer','User')")
     public ResponseEntity<List<MonitoredApi>> getAllAvailableApis(){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("=".repeat(80));
+        System.out.println("🎯 CONTROLLER ACCESS DEBUG");
+        System.out.println("  • Is Authenticated: " + auth.isAuthenticated());
+        System.out.println("  • Principal: " + auth.getPrincipal());
+        System.out.println("  • Authorities: " + auth.getAuthorities());
+
+        auth.getAuthorities().forEach(authority -> {
+            System.out.println("    - Authority: [" + authority.getAuthority() + "]");
+            System.out.println("    - Authority Class: " + authority.getClass().getName());
+        });
+
         return ResponseEntity.status(
                 HttpStatus.OK
         ).body(
@@ -73,7 +88,7 @@ public class MonitorApiController {
     }
 
     @GetMapping("/fetchdata/admin")
-    @PreAuthorize("hasAnyAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('Admin','Developer')")
     public ResponseEntity<FetchDataResponse> getAdminData( ){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -83,7 +98,7 @@ public class MonitorApiController {
     }
 
     @GetMapping("/{apiId}")
-    @PreAuthorize("hasAnyAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('Admin','Developer')")
     public ResponseEntity<GetApiByIdResponse> getApiById( @PathVariable(name = "apiId") String apiId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(

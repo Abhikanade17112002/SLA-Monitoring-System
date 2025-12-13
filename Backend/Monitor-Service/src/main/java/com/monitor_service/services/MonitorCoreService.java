@@ -57,13 +57,14 @@ public class MonitorCoreService {
 
             // Get The Threshold configuration For Each Api
             ThresholdConfig thresholdConfig = thresholdConfigRepository.findByMonitoredApi_ApiId(  api.getApiId()  ) ;
-
-            System.out.println("Trying ==> " + api.getApiName() + " thresholdConfig ==> " + thresholdConfig);
-
+            System.out.println();
+            System.out.println("Trying ==> " + api  + " thresholdConfig ==> " + thresholdConfig);
+            System.out.println();
            HttpPingService.HttpResult  httpResult =  httpPingService.ping( api , thresholdConfig) ;
 
+            System.out.println();
             System.out.println("httpResult ==> " + httpResult);
-
+            System.out.println();
 
             LocalDateTime now = LocalDateTime.now() ;
 
@@ -74,10 +75,13 @@ public class MonitorCoreService {
             healthCheckLog.setUp( httpResult.isUp() );
             healthCheckLog.setTimestamp( now );
             healthCheckLog.setStatusCode( httpResult.statusCode() != null ? httpResult.statusCode() : 0);
-
+            System.out.println();
+            System.out.println(" healthCheckLog ==> " + healthCheckLog);
+            System.out.println();
             healthCheckLogRepository.save( healthCheckLog ) ;
             metricsClient.sendUptimeEvent(
                     new UpTimeEventDTO(
+                            api.getApiName() ,
                             api.getApiId(),
                             httpResult.isUp(),
                             httpResult.statusCode(),
@@ -95,10 +99,11 @@ public class MonitorCoreService {
                 latencyLog.setMonitoredApi( api );
                 latencyLog.setTimestamp( now );
                 latencyLog.setResponseTimeMs( httpResult.latencyMs().intValue());
-
+                System.out.println();
+                System.out.println("Latency ==> " + latencyLog);
                 latencyLogRepository.save( latencyLog ) ;
                 metricsClient.sendLatencyEvent(
-                        new LatencyEventDTO(api.getApiId(), httpResult.latencyMs().intValue(), now)
+                        new LatencyEventDTO(api.getApiId(),api.getApiName(), httpResult.latencyMs().intValue(), now)
                 );
 
             }
@@ -133,7 +138,7 @@ public class MonitorCoreService {
 
                 downTimeIncidentRepository.save(newIncident) ;
                 metricsClient.sendDowntimeEvent(
-                        new DownTimeEventDTO(api.getApiId(), "DOWN", now, null)
+                        new DownTimeEventDTO(api.getApiId(), "DOWN", now, null, api.getApiName())
                 );
             }
 
@@ -152,7 +157,7 @@ public class MonitorCoreService {
 
                 metricsClient.sendDowntimeEvent(
                         new DownTimeEventDTO(api.getApiId(), "RECOVERED",
-                                incident.getStartedAt(), now)
+                                incident.getStartedAt(), now, api.getApiName())
                 );
             }
 

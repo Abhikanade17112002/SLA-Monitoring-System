@@ -11,8 +11,10 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTop60Alerts } from "../../store/slices/NotificationSlice/NotificationSlice";
+import { useNavigate } from "react-router-dom";
 
 const AlertList = () => {
+  const navigate = useNavigate() ;
   const [alerts, setAlerts] = useState( JSON.parse(localStorage.getItem("alertsList")) || []);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +35,11 @@ const AlertList = () => {
         localStorage.setItem("alertsList",JSON.stringify(
              response.payload.notificationLogList
         ))
-      } else if (response.type === "monitor/fetchAlerts/rejected") {
+      }
+          else if( response.payload === "Request failed with status code 401"){
+      navigate("/sessionexpired") ;
+    } 
+ else if (response.type === "monitor/fetchAlerts/rejected") {
         setError(response.error?.message || "Failed to fetch alerts");
       }
     } catch (err) {

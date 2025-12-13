@@ -11,9 +11,9 @@ spring:
     name: Monitor-Service
 
   datasource:
-    url: jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require
-    username: postgres.uppmimztjogbmwkocsih
-    password: gufVCd1tV804BoGY
+    url: jdbc:postgresql://localhost:5432/Monitor-Service
+    username: abhishekkanade
+    password: pass@123   # your local password
     driver-class-name: org.postgresql.Driver
 
     hikari:
@@ -27,7 +27,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+#    show-sql: true
 
 
   cloud:
@@ -70,15 +70,15 @@ feign:
         connectTimeout: 5000
         readTimeout: 30000
 
-# Logging Configuration
-logging:
-  level:
-    feign: DEBUG
-    com.monitor_service: DEBUG
-    org.springframework.web: DEBUG
-    org.hibernate:
-      SQL: DEBUG
-      type:
-        descriptor:
-          sql:
-            BasicBinder: TRACE
+## Logging Configuration
+#logging:
+#  level:
+#    feign: DEBUG
+#    com.monitor_service: DEBUG
+#    org.springframework.web: DEBUG
+#    org.hibernate:
+#      SQL: DEBUG
+#      type:
+#        descriptor:
+#          sql:
+#            BasicBinder: TRACE

@@ -3,7 +3,7 @@ package com.monitor_service.dtos;
 import java.time.LocalDateTime;
 
 public class DownTimeEventDTO {
-
+    private String apiName ;
     private String apiId;
     private String eventType; // DOWN or RECOVERED
     private LocalDateTime startedAt;
@@ -13,12 +13,21 @@ public class DownTimeEventDTO {
     }
 
     public DownTimeEventDTO(String apiId, String eventType,
-                            LocalDateTime startedAt, LocalDateTime resolvedAt) {
+                            LocalDateTime startedAt, LocalDateTime resolvedAt , String apiName ) {
 
         this.apiId = apiId;
         this.eventType = eventType;
         this.startedAt = startedAt;
         this.resolvedAt = resolvedAt;
+        this.apiName =apiName ;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     public String getApiId() { return apiId; }
@@ -45,7 +54,8 @@ public class DownTimeEventDTO {
     @Override
     public String toString() {
         return "DownTimeEventDTO{" +
-                "apiId='" + apiId + '\'' +
+                "apiName='" + apiName + '\'' +
+                ", apiId='" + apiId + '\'' +
                 ", eventType='" + eventType + '\'' +
                 ", startedAt=" + startedAt +
                 ", resolvedAt=" + resolvedAt +

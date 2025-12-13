@@ -3,6 +3,8 @@ package com.monitor_service.dtos;
 import java.time.LocalDateTime;
 
 public class LatencyEventDTO {
+
+    private String apiName ;
     private String apiId;
     private Integer latencyMs;
     private LocalDateTime timestamp;
@@ -11,10 +13,19 @@ public class LatencyEventDTO {
     public LatencyEventDTO() {
     }
 
-    public LatencyEventDTO(String apiId, Integer latencyMs, LocalDateTime timestamp) {
+    public LatencyEventDTO( String apiId, String apiName , Integer latencyMs, LocalDateTime timestamp) {
         this.apiId = apiId;
         this.latencyMs = latencyMs;
         this.timestamp = timestamp;
+        this.apiName = apiName ;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
     }
 
     public String getApiId() { return apiId; }
@@ -36,7 +47,8 @@ public class LatencyEventDTO {
     @Override
     public String toString() {
         return "LatencyEventDTO{" +
-                "apiId='" + apiId + '\'' +
+                "apiName='" + apiName + '\'' +
+                ", apiId='" + apiId + '\'' +
                 ", latencyMs=" + latencyMs +
                 ", timestamp=" + timestamp +
                 '}';

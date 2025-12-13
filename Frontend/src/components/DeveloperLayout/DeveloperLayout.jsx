@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLogOut} from "../../store/slices/AuthSlice/AuthSlice";
 
 
-const AdminLayout = () => {
+const DeveloperLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [open, setOpen] = useState(true);
@@ -28,12 +28,11 @@ const AdminLayout = () => {
     const { user } = useSelector((state) => state.auth);
 
   const menuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/admin/dashboard" },
-    { name: "Manage APIs", icon: <Network size={20} />, path: "/admin/apis" },
-    { name: "Alerts", icon: <Bell size={20} />, path: "/admin/alerts" },
-    { name: "Users", icon: <Users size={20} />, path: "/admin/users" },
-    { name: "Incidents", icon: <AlertTriangle size={20} />, path: "/admin/incidents" },
-    { name: "SLA Reports", icon: <BarChart size={20} />, path: "/admin/reports" },
+    { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/developer/dashboard" },
+    { name: "Manage APIs", icon: <Network size={20} />, path: "/developer/apis" },
+    { name: "Alerts", icon: <Bell size={20} />, path: "/developer/alerts" },
+    { name: "Incidents", icon: <AlertTriangle size={20} />, path: "/developer/incidents" },
+    { name: "SLA Reports", icon: <BarChart size={20} />, path: "/developer/reports" },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -225,4 +224,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default DeveloperLayout;

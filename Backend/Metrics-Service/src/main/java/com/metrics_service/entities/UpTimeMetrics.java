@@ -13,6 +13,8 @@ public class UpTimeMetrics {
     @Column(nullable = false)
     private String apiId;
 
+    private String apiName ;
+
     @Column(nullable = false)
     private boolean up;
 
@@ -69,11 +71,24 @@ public class UpTimeMetrics {
         this.timestamp = timestamp;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
+
     @Override
     public String toString() {
         return "UpTimeMetrics{" +
                 "id='" + id + '\'' +
                 ", apiId='" + apiId + '\'' +
+                ", apiName='" + apiName + '\'' +
                 ", up=" + up +
                 ", statusCode=" + statusCode +
                 ", errorMessage='" + errorMessage + '\'' +
