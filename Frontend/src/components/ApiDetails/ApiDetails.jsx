@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import {
@@ -23,6 +23,7 @@ const ApiDetails = () => {
   const [apiDetail, setApiDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useSelector((state)=>state.auth) ;
 
   useEffect(() => {
     const fetchApiDetails = async () => {
@@ -175,7 +176,7 @@ const ApiDetails = () => {
       </div>
 
       {/* Threshold Config */}
-      {apiDetail.thresholdConfig && (
+      {user && ( user.role === "Admin" || user.role === "Developer" ) && apiDetail.thresholdConfig && (
         <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
           <h3 className="text-xl font-semibold mb-3 text-gray-900">Threshold Configuration</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -258,7 +259,9 @@ const ApiDetails = () => {
       </div>
 
       {/* Health Check Logs */}
-      <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+      {
+        user && ( user.role === "Admin" || user.role === "Developer" ) &&
+              <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
         <h3 className="mb-3 font-semibold text-gray-900">Health Check Logs</h3>
         {!apiDetail.healthCheckLogs || apiDetail.healthCheckLogs.length === 0 ? (
           <p className="text-gray-500">No health check logs available.</p>
@@ -288,6 +291,8 @@ const ApiDetails = () => {
           </div>
         )}
       </div>
+      }
+
 
       {/* Latency Logs */}
       <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">

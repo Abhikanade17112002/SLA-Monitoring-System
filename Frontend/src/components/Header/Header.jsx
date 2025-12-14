@@ -175,8 +175,13 @@ const Header = () => {
 
                     <button
                       onClick={() => {
-                        navigate("/admin/dashboard");
-                        setOpen(false);
+                        if (user?.role === "Admin") {
+                          navigate("/admin/dashboard");
+                        } else if (user?.role === "Developer") {
+                          navigate("/developer/dashboard");
+                        } else if (user?.role === "User") {
+                          navigate("/user/dashboard");
+                        }
                       }}
                       className="flex items-center gap-3 w-full px-4 py-3 text-gray-300 
                                hover:text-white hover:bg-white/10 transition-all"

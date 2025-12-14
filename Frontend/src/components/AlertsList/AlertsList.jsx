@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTop60Alerts } from "../../store/slices/NotificationSlice/NotificationSlice";
 import { useNavigate } from "react-router-dom";
+import {  convertToReadableDate } from "../../utility/utility";
 
 const AlertList = () => {
   const navigate = useNavigate() ;
@@ -240,11 +241,16 @@ const AlertList = () => {
                 <div className="flex items-center gap-2 text-gray-400">
                   <Clock size={14} />
                   <span className="text-xs">
-                    {new Date(alert.createdAt).toLocaleDateString()}
+                    {convertToReadableDate(alert.createdAt).date}
                   </span>
                 </div>
                 <div className="text-sm font-medium text-gray-300">
-                  {new Date(alert.createdAt).toLocaleTimeString()}
+                  {
+                  convertToReadableDate(alert.createdAt).time 
+                  
+                  
+                  
+}
                 </div>
               </div>
             </div>

@@ -38,7 +38,7 @@ const LandingPage = () => {
             </button>
 
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/live/dashboard")}
               className="px-6 py-3 border border-white/20 rounded-lg text-lg 
                          hover:border-blue-400 hover:text-blue-400 transition-all"
             >

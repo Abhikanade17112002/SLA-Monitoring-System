@@ -1,5 +1,7 @@
 
 import { jwtDecode } from "jwt-decode";
+import { handleLogOut } from "../store/slices/AuthSlice/AuthSlice";
+import { useDispatch } from "react-redux";
 
 export const formatTime = (localDateTime) => {
     if (!localDateTime) return "";
@@ -90,10 +92,16 @@ export const isTokenValid = () => {
     const decoded = jwtDecode(token);
     const currentTime = Date.now() / 1000;
     console.log("isTokenValid ==> " + currentTime);
-
-    return decoded.exp > currentTime;
+      if(decoded.exp > currentTime ){
+          return true ;
+      }
+      else{
+        return false ;
+      }
   } catch (error) {
     console.log("Error While Validation The JWT Token ==> " + error);
     return false;
   }
 };
+
+

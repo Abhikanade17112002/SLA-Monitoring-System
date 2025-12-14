@@ -76,14 +76,6 @@ const Profile = () => {
 
           </div>
         </div>
-
-        {/* JWT Token Section */}
-        <div className="mt-12 bg-black/30 border border-white/10 p-5 rounded-xl">
-          <p className="text-gray-400 text-sm mb-2">JWT Token</p>
-          <p className="text-xs break-words text-gray-300 bg-black/40 p-3 rounded-lg border border-white/10">
-            {user.jwtToken}
-          </p>
-        </div>
       </div>
     </div>
   );

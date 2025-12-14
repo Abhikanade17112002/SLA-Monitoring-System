@@ -1,12 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { isTokenValid } from "../../utility/utility";
+import { handleLogOut } from "../../store/slices/AuthSlice/AuthSlice";
 
 const ProtectedRoute = ({ children,allowedRoles }) => {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch() ;
 
   if (!isTokenValid()) {
+    dispatch(handleLogOut()) ;
     return <Navigate to="/" />;
   }
 

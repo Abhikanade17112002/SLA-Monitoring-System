@@ -24,6 +24,11 @@ import DeveloperLayout from "../components/DeveloperLayout/DeveloperLayout";
 import DeveloperDashboard from "../components/DeveloperDashboard/DeveloperDashboard";
 import DeveloperManagedApis from "../components/DeveloperManagedApis/DeveloperManagedApis";
 import DeveloperSLAReport from "../components/DeveloperSLAReport/DeveloperSLAReport";
+import UserManagedApis from "../components/UserManagedApis/UserManagedApis";
+import UserDashboard from "../components/UserDashBoard/UserDashBoard";
+import UsersSLAReport from "../components/UsersSLAReport/UsersSLAReport";
+import UserLayout from "../components/UserLayout/UserLayout";
+import LiveDashboard from "../components/LiveDashBoard/LiveDashBoard";
 
 
 export const router = createBrowserRouter([
@@ -109,6 +114,31 @@ export const router = createBrowserRouter([
     }
   ]
 },
+{
+  path: "/user",
+  element: <ProtectedRoute  allowedRoles={["USER","ADMIN"]}> <UserLayout /> </ProtectedRoute>,
+  children: [
+    { path: "dashboard", element: <UserDashboard /> },
+    { path: "apis", element: <UserManagedApis /> },
+    { path: "incidents", element: <IncidentDetailsCard /> },
+    { path: "reports", element: <UsersSLAReport /> },
+
+    {
+      path : "api/:apiId" ,
+      element :<ApiDetails/>
+    },
+    {
+      path : "api/update/:apiId" ,
+      element :  <ProtectedRoute allowedRoles={["DEVELOPER","ADMIN","USER"]}> <EditApiDetails/> </ProtectedRoute>
+    }
+  ]
+},
+{
+  path:"live/dashboard",
+  element: <LiveDashboard/>
+}
+,
+
   {
     path:"/unauthorized" ,
     element : <Unauthorized/>

@@ -173,4 +173,14 @@ public class MonitorApiService {
 
         return response ;
     }
+
+    public FetchLiveDashBoardDataResponseDTO getLiveDashboardData() {
+
+        List<MonitoredApi> monitoredApis = monitoredApiRepository.findAll() ;
+        FetchLiveDashBoardDataResponseDTO response = new FetchLiveDashBoardDataResponseDTO();
+        response.setMonitoredApis(monitoredApis);
+
+        return response ;
+
+    }
 }

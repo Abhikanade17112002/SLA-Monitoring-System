@@ -1,0 +1,34 @@
+
+API Performance Report
+=====================
+
+Service Details:
+----------------
+Name: Encora
+URL: https://www.encora.com/
+Owner: abhikanade301@gmail.com
+Status: Operational
+Last Checked: Dec 14, 2025, 06:25:16 PM
+
+Performance Metrics:
+-------------------
+Uptime: 88.00%
+Average Latency: 186ms
+Total Downtime: 1h 16m
+SLA Compliance: 90%
+
+Monitoring Summary:
+------------------
+Total Checks: 50
+Successful: 44
+Failed: 6
+
+Threshold Configuration:
+-----------------------
+Expected Status Code: 200
+Max Response Time: 500ms
+Retry Attempts: 2
+Timeout: 2500ms
+
+Generated: 14/12/2025, 18:26:48
+    

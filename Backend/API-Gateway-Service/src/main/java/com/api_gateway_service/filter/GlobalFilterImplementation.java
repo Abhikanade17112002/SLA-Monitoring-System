@@ -32,7 +32,7 @@ public class GlobalFilterImplementation implements GlobalFilter, Ordered {
         String authorizationHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         // 1. Allow unprotected paths (login, register)
-        if (path.contains("/auth/")) {
+        if (path.contains("/auth/") || path.contains("/monitor/live-dashboard-data")) {
             return chain.filter(exchange);
         }
 

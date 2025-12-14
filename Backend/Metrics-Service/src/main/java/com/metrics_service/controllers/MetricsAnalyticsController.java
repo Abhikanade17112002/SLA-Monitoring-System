@@ -9,6 +9,7 @@ import com.metrics_service.services.MetricsAnalyticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,7 @@ public class MetricsAnalyticsController {
     }
 
     @GetMapping("/{apiId}/sla-summary")
+    @PreAuthorize("hasAnyAuthority('Admin','Developer','User')")
     public ResponseEntity<SLASummaryDTO> getSlaSummary(@PathVariable( name = "apiId") String apiId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(metricsAnalyticsService.getSlaSummary(apiId));

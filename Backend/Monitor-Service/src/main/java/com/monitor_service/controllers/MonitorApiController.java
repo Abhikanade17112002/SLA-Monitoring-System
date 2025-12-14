@@ -88,7 +88,7 @@ public class MonitorApiController {
     }
 
     @GetMapping("/fetchdata/admin")
-    @PreAuthorize("hasAnyAuthority('Admin','Developer')")
+    @PreAuthorize("hasAnyAuthority('Admin','Developer','User')")
     public ResponseEntity<FetchDataResponse> getAdminData( ){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
@@ -98,11 +98,20 @@ public class MonitorApiController {
     }
 
     @GetMapping("/{apiId}")
-    @PreAuthorize("hasAnyAuthority('Admin','Developer')")
+    @PreAuthorize("hasAnyAuthority('Admin','Developer','User')")
     public ResponseEntity<GetApiByIdResponse> getApiById( @PathVariable(name = "apiId") String apiId){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(
                         monitorApiService.getApiById(apiId )
+                ) ;
+
+    }
+
+    @GetMapping("/live-dashboard-data")
+    public ResponseEntity<FetchLiveDashBoardDataResponseDTO> getLiveDashboardData( ){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(
+                        monitorApiService.getLiveDashboardData( )
                 ) ;
 
     }
